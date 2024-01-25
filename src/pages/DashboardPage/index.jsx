@@ -3,7 +3,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "../../utils/firebase";
 import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
-import { DEV_API_URL } from "../../utils/constants/api";
+import { API_URL } from "../../utils/baseURL/API_URL";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
@@ -83,7 +83,7 @@ const Dashboard = () => {
 
   const fetchData = useCallback(() => {
     axios
-      .get(`${DEV_API_URL}/fish`)
+      .get(`${API_URL}/fish`)
       .then((response) => {
         console.log(response.data.data);
         setData(response.data.data);
@@ -147,7 +147,7 @@ const Dashboard = () => {
       values.image3 = imageUrls.image3;
 
       axios
-        .post(`${DEV_API_URL}/fish`, values, {
+        .post(`${API_URL}/fish`, values, {
           headers: { Authorization: `Bearer ${validate}` },
         })
         .then((response) => {
@@ -206,7 +206,7 @@ const Dashboard = () => {
 
       axios
         .put(
-          `${DEV_API_URL}/fish/${editData._id}`,
+          `${API_URL}/fish/${editData._id}`,
           {
             ...editData,
             isAvailable: editData.isAvailable === "true" ? true : false,
@@ -257,7 +257,7 @@ const Dashboard = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`${DEV_API_URL}/fish/${row._id}`, {
+          .delete(`${API_URL}/fish/${row._id}`, {
             headers: { Authorization: `Bearer ${validate}` },
           })
           .then((response) => {

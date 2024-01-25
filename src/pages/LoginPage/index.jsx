@@ -48,13 +48,10 @@ export default function SignInSide() {
     });
     try {
       const data = new FormData(event.currentTarget);
-      const response = await axios.post(
-        "http://localhost:5001/api/v1/auth/login",
-        {
-          username: data.get("username"),
-          password: data.get("password"),
-        }
-      );
+      const response = await axios.post(`https://api.kokohkoki.com/api/v1/auth/login`, {
+        username: data.get("username"),
+        password: data.get("password"),
+      });
       sessionStorage.setItem("userToken", response.data.data.token);
       loadingAlert.close();
 
@@ -68,7 +65,7 @@ export default function SignInSide() {
         window.location.href = "/dashboard";
       }, 2000);
     } catch (error) {
-      loadingAlert.close(); 
+      loadingAlert.close();
       console.log(error, "isi error");
       if (error.code === "ERR_NETWORK") {
         Swal.fire({
@@ -76,7 +73,7 @@ export default function SignInSide() {
           title: "Internal Server Error",
           text: "An error occurred while processing your request. Please try again later.",
         });
-      } 
+      }
       if (error.response.status === 401) {
         Swal.fire({
           icon: "error",
