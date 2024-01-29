@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import classes from "../scss/fish.module.scss";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { app } from "../../../utils/firebase";
 
 export default function AddFishForm({ setIsOpen, onSubmit, types }) {
   const [formData, setFormData] = useState({
@@ -19,6 +21,9 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
     discountPercentage: 0,
     discountPriceIdr: 0,
     discountPriceUsd: 0,
+    image1: "",
+    image2: "",
+    image3: "",
   });
   console.log(formData);
 
@@ -37,12 +42,27 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
     setFormData({ ...formData, [name]: finalValue });
   };
 
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    const storage = getStorage(app);
+    const storageRef = ref(storage, "fish_images/" + file.name);
+
+    try {
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      setFormData({ ...formData, [e.target.name]: downloadURL });
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
   };
 
   const inputStyle = "input input-md w-full bg-white";
+  const fileStyle = "file-input file-input-bordered file-input-primary w-full max-w-xs bg-white file-input-sm";
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2 my-4 justify-start text-gray-700 mx-2 font-medium">
@@ -144,6 +164,19 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
       <div className={classes.modalGridForm}>
         <label htmlFor="desc">Description</label>
         <input id="desc" name="desc" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} placeholder="optional" />
+      </div>
+      <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
+      <div className={classes.modalGridForm}>
+        <label htmlFor="image1">Main Image</label>
+        <input id="image1" name="image1" type="file" className={fileStyle} onChange={handleFileChange} required />
+      </div>
+      <div className={classes.modalGridForm}>
+        <label htmlFor="image2">Sub-Image 1</label>
+        <input id="image2" name="image2" type="file" className={fileStyle} onChange={handleFileChange} />
+      </div>
+      <div className={classes.modalGridForm}>
+        <label htmlFor="image3">Sub-Image 2</label>
+        <input id="image3" name="image3" type="file" className={fileStyle} onChange={handleFileChange} />
       </div>
       <div className="flex gap-2 justify-end">
         <button type="reset" onClick={() => setIsOpen(false)} className="px-4 py-1.5 rounded-lg mt-4 text-white bg-rose-500 border-none transition duration-150 ease-in-out hover:opacity-75">
