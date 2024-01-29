@@ -22,7 +22,7 @@ export default function FishItem({ name, type, gender, price, price_usd, size, v
             Available: <span>{isAvailable ? "Yes" : "No"}</span>
           </p>
           <p className="flex flex-wrap gap-0 ">
-            Event:&nbsp;<span> {isEvent ? "Yes" : "No"}</span>&nbsp;-&nbsp; New Arrival:&nbsp;<span> {isNewArrival ? "Yes" : "No"}</span>
+            New Arrival:&nbsp;<span> {isNewArrival ? "Yes" : "No"}</span>&nbsp;-&nbsp;Event:&nbsp;<span> {isEvent ? "Yes" : "No"}</span>
           </p>
           <p></p>
           <p>
