@@ -8,7 +8,7 @@ import EditFishForm from "./form/edit-fish-form";
 import { useAuth } from "../../context/use-context";
 import { editFish } from "../../api/fish-api";
 
-export default function FishModal({ isOpen, setIsOpen, onEdit, fishId, name, type, gender, price, price_usd, images, desc, size, videoURL, discount, isAvailable, isEvent, isNewArrival }) {
+export default function EditFish({ isOpen, setIsOpen, onEdit, fishId, name, type, gender, price, price_usd, images, desc, size, videoURL, discount, isAvailable, isEvent, isNewArrival }) {
   const { userToken } = useAuth();
 
   const handleEdit = async (formData) => {

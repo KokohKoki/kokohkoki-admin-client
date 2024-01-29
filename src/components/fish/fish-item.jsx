@@ -3,8 +3,9 @@ import { idrFormatter, usdFormatter } from "../../utils/formatter";
 import { Pen } from "lucide-react";
 import classes from "./scss/fish.module.scss";
 import { useState } from "react";
-import FishModal from "./edit-fish-modal";
+
 import DeleteFish from "./delete-fish";
+import EditFish from "./edit-fish-modal";
 
 export default function FishItem({ _id, name, type, gender, price, price_usd, size, videoURL, discount, images, desc, isAvailable, isEvent, isNewArrival, reFetchFishes }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,7 +57,7 @@ export default function FishItem({ _id, name, type, gender, price, price_usd, si
         </div>
       </div>
       <div className="w-full h-[2px] bg-gray-500 opacity-80 my-2" />
-      <FishModal
+      <EditFish
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         onEdit={reFetchFishes}
