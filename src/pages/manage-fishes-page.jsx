@@ -14,16 +14,23 @@ export default function ManageFishPage() {
   const [isOpen, setIsOpen] = useState(false);
   const ITEMS_PER_PAGE = 5;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(fishes.length / ITEMS_PER_PAGE);
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const currentFishes = fishes.slice(indexOfFirstItem, indexOfLastItem);
+  const [searchQuery, setSearchQuery] = useState("");
+  console.log(fishes);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  console.log(fishes);
+  const handleSearch = (query) => {
+    setSearchQuery(query.toLowerCase());
+    setCurrentPage(1);
+  };
+
+  const filteredFishes = fishes.filter((fish) => fish.name.toLowerCase().includes(searchQuery) || fish.type.toLowerCase().includes(searchQuery));
+  const totalPages = Math.ceil(filteredFishes.length / ITEMS_PER_PAGE);
+  const currentFishes = filteredFishes.slice(indexOfFirstItem, indexOfLastItem);
 
   const fetchFishes = useCallback(async () => {
     setLoading(true);
@@ -54,7 +61,7 @@ export default function ManageFishPage() {
           <button className="bg-rose-500 text-white px-3 py-2.5 rounded-md" onClick={() => setIsOpen(true)}>
             Add Fish
           </button>
-          <SearchFish />
+          <SearchFish onSearch={handleSearch} />
         </div>
         <FishPagination totalPages={totalPages} paginate={paginate} currentPage={currentPage} />
         <ContentWrapper loading={loading}>

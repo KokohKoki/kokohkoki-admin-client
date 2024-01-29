@@ -34,7 +34,7 @@ export default function FishPagination({ totalPages, paginate, currentPage }) {
   const nextDisabled = currentPage === totalPages;
 
   return (
-    <div className="flex flex-wrap gap-2 justify-start my-2.5 px-2 py-1 text-sm bg-white w-fit rounded-lg text-gray-600">
+    <div className="flex flex-wrap gap-1 justify-start my-2.5 px-2 py-1 text-sm bg-white w-fit rounded-lg text-gray-600">
       <button className={`flex items-center cursor-pointer ${backDisabled ? `opacity-50 cursor-not-allowed` : `hover:text-gray-300 transition duration-300 ease-in-out`} `} onClick={backBtn} disabled={backDisabled}>
         <ChevronLeft />
         <span>Back</span>
