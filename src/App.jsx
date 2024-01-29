@@ -1,11 +1,8 @@
 import { LoginPage, DashboardPage } from "./pages";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./App.css";
+import Layout from "./components/layout/layout";
 
 const isAuthenticated = () => {
   return sessionStorage.getItem("userToken") !== null;
@@ -22,8 +19,13 @@ function App() {
       element: <LoginPage />,
     },
     {
-      path: "/dashboard",
-      element: <ProtectedRoute element={<DashboardPage />} />,
+      element: <Layout />,
+      children: [
+        {
+          path: "/dashboard",
+          element: <ProtectedRoute element={<DashboardPage />} />,
+        },
+      ],
     },
   ]);
 
