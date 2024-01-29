@@ -1,8 +1,9 @@
-import { LoginPage, DashboardPage } from "./pages";
+import { LoginPage } from "./pages";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import "./App.css";
 import Layout from "./components/layout/layout";
 import { useAuth } from "./context/use-context";
+import ManageFishPage from "./pages/manage-fishes-page";
 
 function App() {
   const { isLoggedIn } = useAuth();
@@ -15,9 +16,13 @@ function App() {
     {
       element: <Layout />,
       children: [
+        // {
+        //   path: "/dashboard",
+        //   element: isLoggedIn ? <DashboardPage /> : <Navigate to="/" />,
+        // },
         {
           path: "/dashboard",
-          element: isLoggedIn ? <DashboardPage /> : <Navigate to="/" />,
+          element: isLoggedIn ? <ManageFishPage /> : <Navigate to="/" />,
         },
       ],
     },

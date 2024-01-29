@@ -10,7 +10,7 @@ export default function Layout() {
         </div>
         <span className="font-semibold tracking-wide text-2xl">Admin</span>
       </header>
-      <div className="section-wrapper">
+      <div className="">
         <Outlet />
       </div>
     </>

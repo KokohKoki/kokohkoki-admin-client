@@ -1,6 +1,5 @@
 import { LogOut } from "lucide-react";
-import { Settings } from "lucide-react";
-import { Menu } from "lucide-react";
+import { Settings, Menu } from "lucide-react";
 import { useAuth } from "../../context/use-context";
 
 export default function SideDrawer() {
