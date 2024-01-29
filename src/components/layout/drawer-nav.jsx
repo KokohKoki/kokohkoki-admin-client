@@ -1,8 +1,11 @@
 import { LogOut } from "lucide-react";
 import { Settings } from "lucide-react";
 import { Menu } from "lucide-react";
+import { useAuth } from "../../context/use-context";
 
 export default function SideDrawer() {
+  const { userPayload } = useAuth();
+  const username = userPayload?.username;
   return (
     <div className="drawer">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -15,6 +18,7 @@ export default function SideDrawer() {
         <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
         <ul className="menu p-4 w-80 min-h-full bg-white text-gray-700">
           <span className="font-bold tracking-wider text-lg">Menu</span>
+          <span>{username}</span>
           <div className="w-full h-[2px] bg-gray-300 opacity-30 my-2" />
           <li>
             <a>Manage Fish</a>
