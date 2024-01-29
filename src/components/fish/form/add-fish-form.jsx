@@ -3,8 +3,11 @@ import { useState } from "react";
 import classes from "../scss/fish.module.scss";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "../../../utils/firebase";
+import { fishFormSchema } from "../../../utils/validation";
+import * as Yup from "yup";
 
 export default function AddFishForm({ setIsOpen, onSubmit, types }) {
+  const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
@@ -32,11 +35,11 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
     let finalValue;
 
     if (name === "price" || name === "price_usd" || name.includes("discount")) {
-      finalValue = parseFloat(value) || 0; 
+      finalValue = parseFloat(value) || 0;
     } else if (name === "isAvailable" || name === "isNewArrival" || name === "isEvent" || name === "isDiscount") {
-      finalValue = value === "true"; 
+      finalValue = value === "true";
     } else {
-      finalValue = value; 
+      finalValue = value;
     }
 
     setFormData((prevFormData) => {
@@ -49,9 +52,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
         if (newFormData.price_usd) {
           newFormData.discountPriceUsd = newFormData.price_usd - newFormData.price_usd * discountRate;
         }
-      }
-
-      else if (name === "price" || name === "price_usd") {
+      } else if (name === "price" || name === "price_usd") {
         const discountRate = newFormData.discountPercentage / 100;
         if (name === "price") {
           newFormData.discountPriceIdr = finalValue - finalValue * discountRate;
@@ -78,9 +79,24 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    setFormErrors({});
+
+    try {
+      await fishFormSchema.validate(formData, { abortEarly: false });
+      onSubmit(formData);
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = error.inner.reduce((acc, err) => {
+          acc[err.path] = err.message;
+          return acc;
+        }, {});
+        setFormErrors(errors);
+      } else {
+        console.error("Submission error:", error);
+      }
+    }
   };
 
   const inputStyle = "input input-md w-full bg-white";
@@ -133,6 +149,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
         <label htmlFor="price_usd">Price USD</label>
         <input id="price_usd" name="price_usd" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} required />
       </div>
+      <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
         <label htmlFor="isNewArrival">New Arrival</label>
         <select id="isNewArrival" name="isNewArrival" className="bg-white select select-ghost select-sm" defaultValue="" onChange={handleChange} required>
@@ -153,6 +170,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
           <option value={false}>No</option>
         </select>
       </div>
+      <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
         <label htmlFor="isDiscount">Discount</label>
         <select id="isDiscount" name="isDiscount" className="bg-white select select-ghost select-sm " defaultValue="" onChange={handleChange} required>
@@ -169,30 +187,13 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountPriceIdr">Discount IDR</label>
-        <input
-          id="discountPriceIdr"
-          name="discountPriceIdr"
-          type="text"
-          className={inputStyle}
-          autoComplete="off"
-          placeholder="Calculated discount price in IDR"
-          onChange={handleChange}
-          value={formData.discountPriceIdr} 
-        />
+        <input id="discountPriceIdr" name="discountPriceIdr" type="text" className={inputStyle} autoComplete="off" placeholder="Calculated discount price in IDR" onChange={handleChange} value={formData.discountPriceIdr} />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountPriceUsd">Discount USD</label>
-        <input 
-          id="discountPriceUsd" 
-          name="discountPriceUsd"
-           type="text" 
-           className={inputStyle} 
-           autoComplete="off" 
-           placeholder="Calculated discount price in IDR" 
-           onChange={handleChange}
-           value={formData.discountPriceUsd}
-        />
+        <input id="discountPriceUsd" name="discountPriceUsd" type="text" className={inputStyle} autoComplete="off" placeholder="Calculated discount price in IDR" onChange={handleChange} value={formData.discountPriceUsd} />
       </div>
+      <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
         <label htmlFor="size">Size</label>
         <input id="size" name="size" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} placeholder="optional" />
@@ -218,6 +219,13 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
         <label htmlFor="image3">Sub-Image 2</label>
         <input id="image3" name="image3" type="file" className={fileStyle} onChange={handleFileChange} />
       </div>
+      {Object.keys(formErrors).length > 0 && (
+        <div className="error-messages text-rose-500 text-sm italic flex flex-col items-end justify-end">
+          {Object.values(formErrors).map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
+      )}
       <div className="flex gap-2 justify-end">
         <button type="reset" onClick={() => setIsOpen(false)} className="px-4 py-1.5 rounded-lg mt-4 text-white bg-rose-500 border-none transition duration-150 ease-in-out hover:opacity-75">
           Close
