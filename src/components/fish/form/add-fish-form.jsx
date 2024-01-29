@@ -15,6 +15,10 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
     isAvailable: "",
     isNewArrival: "",
     isEvent: "",
+    isDiscount: false,
+    discountPercentage: 0,
+    discountPriceIdr: 0,
+    discountPriceUsd: 0,
   });
   console.log(formData);
 
@@ -22,13 +26,14 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
     const { name, value } = e.target;
     let finalValue;
 
-    if (name === "price" || name === "price_usd") {
+    if (name === "price" || name === "price_usd" || name.includes("discount")) {
       finalValue = parseFloat(value) || 0;
-    } else if (name === "isAvailable" || name === "isNewArrival" || name === "isEvent") {
+    } else if (name === "isAvailable" || name === "isNewArrival" || name === "isEvent" || name === "isDiscount") {
       finalValue = value === "true";
     } else {
       finalValue = value;
     }
+
     setFormData({ ...formData, [name]: finalValue });
   };
 
@@ -108,7 +113,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="isDiscount">Discount</label>
-        <select id="isDiscount" name="isDiscount" className="bg-white select select-ghost select-sm " defaultValue="">
+        <select id="isDiscount" name="isDiscount" className="bg-white select select-ghost select-sm " defaultValue="" onChange={handleChange}>
           <option value="" disabled>
             Pick one
           </option>
@@ -117,28 +122,28 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
         </select>
       </div>
       <div className={classes.modalGridForm}>
-        <label htmlFor="Percentage">Discount%</label>
-        <input id="Percentage" name="Percentage" type="text" className={inputStyle} autoComplete="off" />
+        <label htmlFor="discountPercentage">Discount%</label>
+        <input id="discountPercentage" name="discountPercentage" type="text" className={inputStyle} autoComplete="off" placeholder="Fill, if only you input yes on discount" onChange={handleChange} />
       </div>
       <div className={classes.modalGridForm}>
-        <label htmlFor="discountIDR">Discount IDR</label>
-        <input id="discountIDR" name="discountIDR" type="text" className={inputStyle} autoComplete="off" />
+        <label htmlFor="discountPriceIdr">Discount IDR</label>
+        <input id="discountPriceIdr" name="discountPriceIdr" type="text" className={inputStyle} autoComplete="off" placeholder="Fill, if only you input yes on discount" onChange={handleChange} />
       </div>
       <div className={classes.modalGridForm}>
-        <label htmlFor="discountUSD">Discount USD</label>
-        <input id="discountUSD" name="discountUSD" type="text" className={inputStyle} autoComplete="off" />
+        <label htmlFor="discountPriceUsd">Discount USD</label>
+        <input id="discountPriceUsd" name="discountPriceUsd" type="text" className={inputStyle} autoComplete="off" placeholder="Fill, if only you input yes on discount" onChange={handleChange} />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="size">Size</label>
-        <input id="size" name="size" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} />
+        <input id="size" name="size" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} placeholder="optional" />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="videoURL">videoURL</label>
-        <input id="videoURL" name="videoURL" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} />
+        <input id="videoURL" name="videoURL" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} placeholder="optional" />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="desc">Description</label>
-        <input id="desc" name="desc" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} />
+        <input id="desc" name="desc" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} placeholder="optional" />
       </div>
       <div className="flex gap-2 justify-end">
         <button type="reset" onClick={() => setIsOpen(false)} className="px-4 py-1.5 rounded-lg mt-4 text-white bg-rose-500 border-none transition duration-150 ease-in-out hover:opacity-75">

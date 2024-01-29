@@ -31,6 +31,8 @@ export default function ManageFishPage() {
     fetchFishes();
   }, [fetchFishes]);
 
+  const reversedFishes = [...fishes].reverse();
+
   return (
     <>
       <section className="section-wrapper">
@@ -41,7 +43,7 @@ export default function ManageFishPage() {
           <SearchFish />
         </div>
         <ContentWrapper loading={loading}>
-          {fishes.map((fish) => (
+          {reversedFishes.map((fish) => (
             <FishItem key={fish._id} {...fish} />
           ))}
         </ContentWrapper>
