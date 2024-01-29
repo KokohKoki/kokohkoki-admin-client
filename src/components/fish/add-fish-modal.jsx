@@ -8,15 +8,19 @@ import AddFishForm from "./form/add-fish-form";
 import { useAuth } from "../../context/use-context";
 import { createFish } from "../../api/fish-api";
 
-export default function AddFish({ isOpen, setIsOpen, types }) {
+export default function AddFish({ isOpen, setIsOpen, types, onAdd }) {
   const { userToken } = useAuth();
 
   const handleAddFish = async (formData) => {
     try {
       await createFish(userToken, formData);
-      setIsOpen(false);
+      if (onAdd) {
+        onAdd();
+      }
     } catch (error) {
       console.error("Failed to add fish:", error);
+    } finally {
+      setIsOpen(false);
     }
   };
 

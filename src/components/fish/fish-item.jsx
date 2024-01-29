@@ -3,10 +3,10 @@ import { idrFormatter, usdFormatter } from "../../utils/formatter";
 import { Pen } from "lucide-react";
 import classes from "./scss/fish.module.scss";
 import { useState } from "react";
-import FishModal from "./fish-modal";
+import FishModal from "./edit-fish-modal";
 import DeleteFish from "./delete-fish";
 
-export default function FishItem({ _id, name, type, gender, price, price_usd, size, videoURL, discount, images, isAvailable, isEvent, isNewArrival, reFetchFishes }) {
+export default function FishItem({ _id, name, type, gender, price, price_usd, size, videoURL, discount, images, desc, isAvailable, isEvent, isNewArrival, reFetchFishes }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -34,7 +34,7 @@ export default function FishItem({ _id, name, type, gender, price, price_usd, si
           </p>
           <div className="flex flex-col">
             <p>
-              Discount: <span>{discount?.isDiscount ? "Yes" : "No"}</span>
+              Discount: <span>{discount?.isDiscount ? `Yes - ${discount?.discountPercentage}%` : "No"}</span>
             </p>
             {discount?.isDiscount && (
               <p>
@@ -59,8 +59,12 @@ export default function FishItem({ _id, name, type, gender, price, price_usd, si
       <FishModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        onEdit={reFetchFishes}
+        fishId={_id}
         name={name}
         type={type}
+        images={images}
+        desc={desc}
         gender={gender}
         price={price}
         price_usd={price_usd}

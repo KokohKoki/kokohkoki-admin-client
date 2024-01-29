@@ -52,7 +52,7 @@ export default function ManageFishPage() {
           ))}
         </ContentWrapper>
       </section>
-      <AddFish isOpen={isOpen} setIsOpen={setIsOpen} types={types} />
+      <AddFish isOpen={isOpen} setIsOpen={setIsOpen} types={types} onAdd={reFetchFishes} />
     </>
   );
 }
