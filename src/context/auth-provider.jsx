@@ -14,19 +14,19 @@ function retrieveStoredToken() {
 export const AuthProvider = ({ children }) => {
   const storedToken = retrieveStoredToken();
   const initialToken = storedToken.token || "";
-  const [accessToken, setAccessToken] = useState(initialToken);
+  const [userToken, setUserToken] = useState(initialToken);
   const [userPayload, setUserPayload] = useState(null);
-  const isLoggedIn = !!accessToken;
+  const isLoggedIn = !!userToken;
 
   useEffect(() => {
-    if (accessToken) {
-      const decoded = jwtDecode(accessToken);
+    if (userToken) {
+      const decoded = jwtDecode(userToken);
       setUserPayload(decoded);
     } else {
       setUserPayload(null);
     }
-  }, [accessToken]);
+  }, [userToken]);
   // console.log(userPayload);
 
-  return <AuthContext.Provider value={{ isLoggedIn, accessToken, setAccessToken, userPayload }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isLoggedIn, userToken, setUserToken, userPayload }}>{children}</AuthContext.Provider>;
 };
