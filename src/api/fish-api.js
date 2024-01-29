@@ -21,3 +21,27 @@ export const createFish = async (token, formData) => {
     throw error;
   }
 };
+
+export const deleteFish = async (token, fishId) => {
+  try {
+    const response = await api.delete(`/fish/${fishId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const editFish = async (token, fishId, formData) => {
+  try {
+    const response = await api.put(`/fish/${fishId}`, formData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

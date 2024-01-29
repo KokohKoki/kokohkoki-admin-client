@@ -31,6 +31,10 @@ export default function ManageFishPage() {
     fetchFishes();
   }, [fetchFishes]);
 
+  const reFetchFishes = () => {
+    fetchFishes();
+  };
+
   const reversedFishes = [...fishes].reverse();
 
   return (
@@ -44,7 +48,7 @@ export default function ManageFishPage() {
         </div>
         <ContentWrapper loading={loading}>
           {reversedFishes.map((fish) => (
-            <FishItem key={fish._id} {...fish} />
+            <FishItem key={fish._id} {...fish} reFetchFishes={reFetchFishes} />
           ))}
         </ContentWrapper>
       </section>
