@@ -7,7 +7,7 @@ import { useState } from "react";
 import DeleteFish from "./delete-fish";
 import EditFish from "./edit-fish-modal";
 
-export default function FishItem({ _id, name, type, gender, price, price_usd, size, videoURL, discount, images, desc, isAvailable, isEvent, isNewArrival, reFetchFishes }) {
+export default function FishItem({ _id, name, type, gender, price, price_usd, size, videoURL, discount, images, desc, isAvailable, isEvent, isNewArrival, reFetchFishes, typesData }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -75,6 +75,7 @@ export default function FishItem({ _id, name, type, gender, price, price_usd, si
         isAvailable={isAvailable}
         isEvent={isEvent}
         isNewArrival={isNewArrival}
+        typesData={typesData}
       />
     </>
   );

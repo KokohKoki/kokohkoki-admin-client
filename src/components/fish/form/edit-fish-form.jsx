@@ -5,7 +5,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "../../../utils/firebase";
 import { ImagePlus } from "lucide-react";
 
-export default function EditFishForm({ isAvailable, name, gender, type, price, price_usd, images, size, desc, videoURL, discount, isEvent, isNewArrival, setIsOpen, onSubmit }) {
+export default function EditFishForm({ isAvailable, name, gender, type, price, price_usd, images, size, desc, videoURL, discount, isEvent, isNewArrival, setIsOpen, onSubmit, typesData }) {
   const [formData, setFormData] = useState({
     name: name,
     gender: gender,
@@ -106,7 +106,13 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="type">Type</label>
-        <input id="type" name="type" type="text" className={inputStyle} autoComplete="off" value={formData.type} onChange={handleChange} />
+        <select id="type" name="type" className="bg-white select select-ghost select-sm" value={formData.type} onChange={handleChange}>
+          {typesData.map((type) => (
+            <option key={type._id} value={type.name}>
+              {type.name}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>

@@ -48,7 +48,7 @@ export default function ManageFishPage() {
         </div>
         <ContentWrapper loading={loading}>
           {reversedFishes.map((fish) => (
-            <FishItem key={fish._id} {...fish} reFetchFishes={reFetchFishes} />
+            <FishItem key={fish._id} {...fish} reFetchFishes={reFetchFishes} typesData={types} />
           ))}
         </ContentWrapper>
       </section>
