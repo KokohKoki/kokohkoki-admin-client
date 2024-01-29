@@ -1,18 +1,12 @@
 import { LoginPage, DashboardPage } from "./pages";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import "./App.css";
 import Layout from "./components/layout/layout";
-
-const isAuthenticated = () => {
-  return sessionStorage.getItem("userToken") !== null;
-};
-
-const ProtectedRoute = ({ element }) => {
-  return isAuthenticated() ? element : <Navigate to="/" replace />;
-};
+import { useAuth } from "./context/use-context";
 
 function App() {
+  const { isLoggedIn } = useAuth();
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -23,7 +17,7 @@ function App() {
       children: [
         {
           path: "/dashboard",
-          element: <ProtectedRoute element={<DashboardPage />} />,
+          element: isLoggedIn ? <DashboardPage /> : <Navigate to="/" />,
         },
       ],
     },
@@ -35,9 +29,5 @@ function App() {
     </>
   );
 }
-
-ProtectedRoute.propTypes = {
-  element: PropTypes.element.isRequired,
-};
 
 export default App;
