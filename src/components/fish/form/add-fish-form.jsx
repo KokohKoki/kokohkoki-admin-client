@@ -25,7 +25,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
     image2: "",
     image3: "",
   });
-  console.log(formData);
+  // console.log(formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
