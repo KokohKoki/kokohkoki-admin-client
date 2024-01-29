@@ -40,7 +40,7 @@ export default function FishPagination({ totalPages, paginate, currentPage }) {
         <span>Back</span>
       </button>
       {Array.from({ length: totalPages }, (_, index) => (
-        <span key={index} className={`flex items-center justify-center m-0 p-0 h-6 w-6 rounded-md cursor-pointer transition duration-300 ease-in-out ${currentPage === index + 1 ? "bg-rose-500 opacity-75" : "bg-white hover:bg-rose-500"}`}>
+        <span key={index} className={`flex items-center justify-center m-0 p-0 h-6 w-6 rounded-md cursor-pointer transition duration-300 ease-in-out ${currentPage === index + 1 ? "bg-rose-500 opacity-90" : "bg-white hover:bg-rose-500"}`}>
           <a onClick={() => pageNumberSelect(index + 1)}>{index + 1}</a>
         </span>
       ))}
