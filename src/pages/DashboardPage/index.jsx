@@ -7,7 +7,7 @@ import { API_URL } from "../../utils/baseURL/API_URL";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
-import jwtDecode from "jwt-decode";
+
 import {
   Button,
   Dialog,
@@ -21,6 +21,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import { jwtDecode } from "jwt-decode";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
