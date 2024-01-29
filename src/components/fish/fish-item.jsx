@@ -11,8 +11,8 @@ export default function FishItem({ name, type, gender, price, price_usd, size, v
   return (
     <>
       <div className={`${classes.fishes} flex gap-2 items-start`}>
-        <div>
-          <img src={images?.image1} className="h-20 w-20 aspect-square object-cover rounded-lg shadow" />
+        <div className="h-24 w-24">
+          <img src={images?.image1} className="aspect-square object-cover rounded-lg shadow" />
         </div>
         <div className="text-black w-full text-start text-sm flex flex-col">
           <p>

@@ -25,21 +25,43 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
     image2: "",
     image3: "",
   });
-  // console.log(formData);
+  console.log(formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     let finalValue;
 
     if (name === "price" || name === "price_usd" || name.includes("discount")) {
-      finalValue = parseFloat(value) || 0;
+      finalValue = parseFloat(value) || 0; 
     } else if (name === "isAvailable" || name === "isNewArrival" || name === "isEvent" || name === "isDiscount") {
-      finalValue = value === "true";
+      finalValue = value === "true"; 
     } else {
-      finalValue = value;
+      finalValue = value; 
     }
 
-    setFormData({ ...formData, [name]: finalValue });
+    setFormData((prevFormData) => {
+      const newFormData = { ...prevFormData, [name]: finalValue };
+      if (name === "discountPercentage") {
+        const discountRate = finalValue / 100;
+        if (newFormData.price) {
+          newFormData.discountPriceIdr = newFormData.price - newFormData.price * discountRate;
+        }
+        if (newFormData.price_usd) {
+          newFormData.discountPriceUsd = newFormData.price_usd - newFormData.price_usd * discountRate;
+        }
+      }
+
+      else if (name === "price" || name === "price_usd") {
+        const discountRate = newFormData.discountPercentage / 100;
+        if (name === "price") {
+          newFormData.discountPriceIdr = finalValue - finalValue * discountRate;
+        } else if (name === "price_usd") {
+          newFormData.discountPriceUsd = finalValue - finalValue * discountRate;
+        }
+      }
+
+      return newFormData;
+    });
   };
 
   const handleFileChange = async (e) => {
@@ -68,7 +90,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
     <form onSubmit={handleSubmit} className="flex flex-col gap-2 my-4 justify-start text-gray-700 mx-2 font-medium">
       <div className={classes.modalGridForm}>
         <label htmlFor="isAvailable">Available</label>
-        <select id="isAvailable" name="isAvailable" className="bg-white select select-ghost select-sm" defaultValue="" onChange={handleChange}>
+        <select id="isAvailable" name="isAvailable" className="bg-white select select-ghost select-sm" defaultValue="" onChange={handleChange} required>
           <option value="" disabled>
             Pick one
           </option>
@@ -78,11 +100,11 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="name">Name</label>
-        <input id="name" name="name" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} />
+        <input id="name" name="name" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} required />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="gender">Gender</label>
-        <select id="gender" name="gender" className="bg-white select select-ghost select-sm" onChange={handleChange} defaultValue="">
+        <select id="gender" name="gender" className="bg-white select select-ghost select-sm" onChange={handleChange} defaultValue="" required>
           <option value="" disabled>
             Pick one
           </option>
@@ -92,7 +114,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="type">Type</label>
-        <select id="type" name="type" className="bg-white select select-ghost select-sm" onChange={handleChange} defaultValue="">
+        <select id="type" name="type" className="bg-white select select-ghost select-sm" onChange={handleChange} defaultValue="" required>
           <option value="" disabled>
             Pick one
           </option>
@@ -105,15 +127,15 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="price">Price IDR</label>
-        <input id="price" name="price" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} />
+        <input id="price" name="price" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} required />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="price_usd">Price USD</label>
-        <input id="price_usd" name="price_usd" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} />
+        <input id="price_usd" name="price_usd" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} required />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="isNewArrival">New Arrival</label>
-        <select id="isNewArrival" name="isNewArrival" className="bg-white select select-ghost select-sm" defaultValue="" onChange={handleChange}>
+        <select id="isNewArrival" name="isNewArrival" className="bg-white select select-ghost select-sm" defaultValue="" onChange={handleChange} required>
           <option value="" disabled>
             Pick one
           </option>
@@ -123,7 +145,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="isEvent">Event</label>
-        <select id="isEvent" name="isEvent" className="bg-white select select-ghost select-sm" defaultValue="" onChange={handleChange}>
+        <select id="isEvent" name="isEvent" className="bg-white select select-ghost select-sm" defaultValue="" onChange={handleChange} required>
           <option value="" disabled>
             Pick one
           </option>
@@ -133,7 +155,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="isDiscount">Discount</label>
-        <select id="isDiscount" name="isDiscount" className="bg-white select select-ghost select-sm " defaultValue="" onChange={handleChange}>
+        <select id="isDiscount" name="isDiscount" className="bg-white select select-ghost select-sm " defaultValue="" onChange={handleChange} required>
           <option value="" disabled>
             Pick one
           </option>
@@ -147,11 +169,29 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountPriceIdr">Discount IDR</label>
-        <input id="discountPriceIdr" name="discountPriceIdr" type="text" className={inputStyle} autoComplete="off" placeholder="Fill, if only you input yes on discount" onChange={handleChange} />
+        <input
+          id="discountPriceIdr"
+          name="discountPriceIdr"
+          type="text"
+          className={inputStyle}
+          autoComplete="off"
+          placeholder="Calculated discount price in IDR"
+          onChange={handleChange}
+          value={formData.discountPriceIdr} 
+        />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountPriceUsd">Discount USD</label>
-        <input id="discountPriceUsd" name="discountPriceUsd" type="text" className={inputStyle} autoComplete="off" placeholder="Fill, if only you input yes on discount" onChange={handleChange} />
+        <input 
+          id="discountPriceUsd" 
+          name="discountPriceUsd"
+           type="text" 
+           className={inputStyle} 
+           autoComplete="off" 
+           placeholder="Calculated discount price in IDR" 
+           onChange={handleChange}
+           value={formData.discountPriceUsd}
+        />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="size">Size</label>
