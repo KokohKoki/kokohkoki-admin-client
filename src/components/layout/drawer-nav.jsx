@@ -23,6 +23,9 @@ export default function SideDrawer() {
             <a>Manage Fish</a>
           </li>
           <li>
+            <a>Manage Types & Events</a>
+          </li>
+          <li>
             <a>Manage Discount</a>
           </li>
           <li>

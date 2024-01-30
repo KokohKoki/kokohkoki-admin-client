@@ -8,7 +8,7 @@ import AddFishForm from "./form/add-fish-form";
 import { useAuth } from "../../context/use-context";
 import { createFish } from "../../api/fish-api";
 
-export default function AddFish({ isOpen, setIsOpen, types, onAdd }) {
+export default function AddFish({ isOpen, setIsOpen, types, onAdd, eventList }) {
   const { userToken } = useAuth();
 
   const handleAddFish = async (formData) => {
@@ -42,7 +42,7 @@ export default function AddFish({ isOpen, setIsOpen, types, onAdd }) {
       </button>
       <div onClick={(e) => e.stopPropagation()} className={classes.modalCard}>
         <h1 className="text-xl flex justify-center text-rose-500 font-bold my-3">Add Fish</h1>
-        <AddFishForm setIsOpen={setIsOpen} onSubmit={handleAddFish} types={types} />
+        <AddFishForm setIsOpen={setIsOpen} onSubmit={handleAddFish} types={types} eventList={eventList} />
       </div>
     </div>
   );
