@@ -14,10 +14,16 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Logo from "../../components/Logo";
 import style from "./loginPage.module.css";
+import { API_URL } from "../../utils/baseURL/API_URL";
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
       {"Copyright © "}
       <Link color="inherit" href="#">
         KokohKoki
@@ -43,7 +49,7 @@ export default function SignInSide() {
     });
     try {
       const data = new FormData(event.currentTarget);
-      const response = await axios.post(`http://localhost:5002/api/v1/auth/login`, {
+      const response = await axios.post(`${API_URL}/auth/login`, {
         username: data.get("username"),
         password: data.get("password"),
       });
@@ -90,14 +96,23 @@ export default function SignInSide() {
             sm={4}
             md={7}
             sx={{
-              backgroundImage: "url(https://kokohkoki.com/assets/about-us/about-us-hero.webp), linear-gradient(rgb(20, 13, 27), rgba(0, 0, 0, 1))",
+              backgroundImage:
+                "url(https://kokohkoki.com/assets/about-us/about-us-hero.webp), linear-gradient(rgb(20, 13, 27), rgba(0, 0, 0, 1))",
               backgroundRepeat: "no-repeat",
               backgroundColor: "dark",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
           />
-          <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={5}
+            component={Paper}
+            elevation={6}
+            square
+          >
             <Box
               sx={{
                 my: 8,
@@ -111,11 +126,40 @@ export default function SignInSide() {
               <Typography component="h1" variant="h5">
                 Admin Panel
               </Typography>
-              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                <TextField margin="normal" required fullWidth id="username" label="Usename" name="username" autoFocus />
-                <TextField margin="normal" required fullWidth name="password" label="Password" type="password" id="password" />
-                <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 1 }}
+              >
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Usename"
+                  name="username"
+                  autoFocus
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                />
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
                   Log In
                 </Button>
                 {/* <Grid container>
