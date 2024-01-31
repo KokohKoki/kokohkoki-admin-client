@@ -28,7 +28,7 @@ export default function SideDrawer() {
             <Link to="/dashboard/type">Manage Types</Link>
           </li>
           <li>
-            <a>Manage Events</a>
+            <Link to="/dashboard/event">Manage Events</Link>
           </li>
           <li>
             <a>Manage Coupon</a>
