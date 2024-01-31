@@ -8,7 +8,7 @@ import EditFishForm from "./form/edit-fish-form";
 import { useAuth } from "../../context/use-context";
 import { editFish } from "../../api/fish-api";
 
-export default function EditFish({ isOpen, setIsOpen, onEdit, fishId, name, type, gender, price, price_usd, images, desc, size, videoURL, discount, isAvailable, isEvent, isNewArrival, typesData }) {
+export default function EditFish({ isOpen, setIsOpen, onEdit, fishId, name, type, gender, price, price_usd, images, desc, size, videoURL, discount, isAvailable, isEvent, event ,isNewArrival, typesData, eventList }) {
   const { userToken } = useAuth();
 
   const handleEdit = async (formData) => {
@@ -55,10 +55,12 @@ export default function EditFish({ isOpen, setIsOpen, onEdit, fishId, name, type
           videoURL={videoURL}
           discount={discount}
           isEvent={isEvent}
+          event={event}
           isNewArrival={isNewArrival}
           setIsOpen={setIsOpen}
           onSubmit={handleEdit}
           typesData={typesData}
+          eventList={eventList}
         />
       </div>
     </div>

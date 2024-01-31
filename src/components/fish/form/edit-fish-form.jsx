@@ -5,7 +5,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "../../../utils/firebase";
 import { ImagePlus } from "lucide-react";
 
-export default function EditFishForm({ isAvailable, name, gender, type, price, price_usd, images, size, desc, videoURL, discount, isEvent, isNewArrival, setIsOpen, onSubmit, typesData }) {
+export default function EditFishForm({ isAvailable, name, gender, type, price, price_usd, images, size, desc, videoURL, discount, isEvent, event, isNewArrival, setIsOpen, onSubmit, typesData, eventList }) {
   const [formData, setFormData] = useState({
     name: name,
     gender: gender,
@@ -18,6 +18,7 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
     isAvailable: isAvailable,
     isNewArrival: isNewArrival,
     isEvent: isEvent,
+    event: event,
     isDiscount: discount?.isDiscount || false,
     discountPercentage: discount?.discountPercentage || 0,
     discountPriceIdr: discount?.discountPriceIdr || 0,
@@ -132,10 +133,23 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
         </select>
       </div>
       <div className={classes.modalGridForm}>
-        <label htmlFor="isEvent">Event</label>
+        <label htmlFor="isEvent">Is Event ?</label>
         <select id="isEvent" name="isEvent" className="bg-white select select-ghost select-sm" value={formData.isEvent} onChange={handleChange}>
           <option value={true}>Yes</option>
           <option value={false}>No</option>
+        </select>
+      </div>
+      <div className={classes.modalGridForm}>
+        <label htmlFor="event">Change Event</label>
+        <select id="event" name="event" className="bg-white select select-ghost select-sm" value={formData.event} onChange={handleChange}>
+          <option value="" disabled>
+            Pick one (only if you pick yes above)
+          </option>
+          {eventList.map((event) => (
+            <option key={event._id} value={event.name}>
+              {event.name}
+            </option>
+          ))}
         </select>
       </div>
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />

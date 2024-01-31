@@ -6,7 +6,7 @@ import { app } from "../../../utils/firebase";
 import { fishFormSchema } from "../../../utils/validation";
 import * as Yup from "yup";
 
-export default function AddFishForm({ setIsOpen, onSubmit, types }) {
+export default function AddFishForm({ setIsOpen, onSubmit, types, eventList }) {
   const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     name: "",
@@ -20,6 +20,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
     isAvailable: "",
     isNewArrival: "",
     isEvent: "",
+    event: "",
     isDiscount: false,
     discountPercentage: 0,
     discountPriceIdr: 0,
@@ -160,14 +161,28 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
           <option value={false}>No</option>
         </select>
       </div>
+      <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
-        <label htmlFor="isEvent">Event</label>
+        <label htmlFor="isEvent">Is Event ?</label>
         <select id="isEvent" name="isEvent" className="bg-white select select-ghost select-sm" defaultValue="" onChange={handleChange} required>
           <option value="" disabled>
             Pick one
           </option>
           <option value={true}>Yes</option>
           <option value={false}>No</option>
+        </select>
+      </div>
+      <div className={classes.modalGridForm}>
+        <label htmlFor="event">Choose Event</label>
+        <select id="event" name="event" className="bg-white select select-ghost select-sm" onChange={handleChange} defaultValue="">
+          <option value="" disabled>
+            Pick one (only if you pick yes above)
+          </option>
+          {eventList.map((event) => (
+            <option key={event._id} value={event.name}>
+              {event.name}
+            </option>
+          ))}
         </select>
       </div>
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
@@ -209,7 +224,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types }) {
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
         <label htmlFor="image1">Main Image</label>
-        <input id="image1" name="image1" type="file" className={fileStyle} onChange={handleFileChange} required />
+        <input id="image1" name="image1" type="file" className={fileStyle} onChange={handleFileChange} />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="image2">Sub-Image 1</label>

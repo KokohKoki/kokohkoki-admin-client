@@ -6,10 +6,12 @@ import SearchFish from "../components/fish/search-fish";
 import AddFish from "../components/fish/add-fish-modal";
 import { getAllTypes } from "../api/type-api";
 import FishPagination from "../components/fish/fish-pagination";
+import { getAllEvents } from "../api/event-api";
 
 export default function ManageFishPage() {
   const [fishes, setFishes] = useState([]);
   const [types, setTypes] = useState([]);
+  const [eventList, setEventList] = useState([])
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const ITEMS_PER_PAGE = 5;
@@ -18,6 +20,7 @@ export default function ManageFishPage() {
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
   const [searchQuery, setSearchQuery] = useState("");
   console.log(fishes);
+  // console.log(eventList)
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -37,8 +40,10 @@ export default function ManageFishPage() {
     try {
       const data = await getAllFishes();
       const types = await getAllTypes();
+      const eventList = await getAllEvents();
       setFishes(data.data.reverse());
       setTypes(types.data);
+      setEventList(eventList.data)
     } catch (error) {
       console.error("Failed to fetch fishes or types:", error);
     } finally {
@@ -66,11 +71,11 @@ export default function ManageFishPage() {
         <FishPagination totalPages={totalPages} paginate={paginate} currentPage={currentPage} />
         <ContentWrapper loading={loading}>
           {currentFishes.map((fish) => (
-            <FishItem key={fish._id} {...fish} reFetchFishes={reFetchFishes} typesData={types} />
+            <FishItem key={fish._id} {...fish} reFetchFishes={reFetchFishes} typesData={types} eventList={eventList} />
           ))}
         </ContentWrapper>
       </section>
-      <AddFish isOpen={isOpen} setIsOpen={setIsOpen} types={types} onAdd={reFetchFishes} />
+      <AddFish isOpen={isOpen} setIsOpen={setIsOpen} types={types} onAdd={reFetchFishes} eventList={eventList}  />
     </>
   );
 }
