@@ -11,7 +11,7 @@ import { getAllEvents } from "../api/event-api";
 export default function ManageFishPage() {
   const [fishes, setFishes] = useState([]);
   const [types, setTypes] = useState([]);
-  const [eventList, setEventList] = useState([])
+  const [eventList, setEventList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const ITEMS_PER_PAGE = 5;
@@ -41,7 +41,7 @@ export default function ManageFishPage() {
       const eventList = await getAllEvents();
       setFishes(data.data.reverse());
       setTypes(types.data);
-      setEventList(eventList.data)
+      setEventList(eventList.data);
     } catch (error) {
       console.error("Failed to fetch fishes or types:", error);
     } finally {
@@ -60,6 +60,7 @@ export default function ManageFishPage() {
   return (
     <>
       <section id="fish-section" className="section-wrapper">
+        <h1 className="text-rose-500 text-2xl font-bold mb-6">Manage Fishes</h1>
         <div className="flex flex-wrap justify-between items-center mb-3">
           <button className="bg-rose-500 text-white px-3 py-2.5 rounded-md" onClick={() => setIsOpen(true)}>
             Add Fish
@@ -73,7 +74,7 @@ export default function ManageFishPage() {
           ))}
         </ContentWrapper>
       </section>
-      <AddFish isOpen={isOpen} setIsOpen={setIsOpen} types={types} onAdd={reFetchFishes} eventList={eventList}  />
+      <AddFish isOpen={isOpen} setIsOpen={setIsOpen} types={types} onAdd={reFetchFishes} eventList={eventList} />
     </>
   );
 }

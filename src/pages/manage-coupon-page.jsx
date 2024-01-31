@@ -34,6 +34,7 @@ export default function ManageCouponPage() {
   return (
     <>
       <section id="coupon-section" className="section-wrapper">
+        <h1 className="text-rose-500 text-2xl font-bold mb-5">Manage Coupons</h1>
         <div className="flex flex-wrap justify-between items-center mb-3">
           <button className="bg-rose-500 text-white px-3 py-2.5 rounded-md" onClick={() => setIsOpen(true)}>
             Add Coupon
