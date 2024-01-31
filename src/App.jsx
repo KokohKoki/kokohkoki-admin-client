@@ -6,6 +6,7 @@ import { useAuth } from "./context/use-context";
 import ManageFishPage from "./pages/manage-fishes-page";
 import ManageTypePage from "./pages/manage-types-page";
 import ManageEventPage from "./pages/manage-events-page";
+import ManageCouponPage from "./pages/manage-coupon.page";
 
 function App() {
   const { isLoggedIn } = useAuth();
@@ -33,6 +34,10 @@ function App() {
         {
           path: "/dashboard/event",
           element: isLoggedIn ? <ManageEventPage /> : <Navigate to="/" />,
+        },
+        {
+          path: "/dashboard/coupon",
+          element: isLoggedIn ? <ManageCouponPage /> : <Navigate to="/" />,
         },
       ],
     },

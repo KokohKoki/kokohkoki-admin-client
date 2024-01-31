@@ -19,8 +19,6 @@ export default function ManageFishPage() {
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
   const [searchQuery, setSearchQuery] = useState("");
-  console.log(fishes);
-  // console.log(eventList)
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);

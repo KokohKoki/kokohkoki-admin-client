@@ -29,7 +29,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types, eventList }) {
     image2: "",
     image3: "",
   });
-  console.log(formData);
+  // console.log(formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -144,11 +144,11 @@ export default function AddFishForm({ setIsOpen, onSubmit, types, eventList }) {
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="price">Price IDR</label>
-        <input id="price" name="price" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} required />
+        <input id="price" name="price" type="number" className={inputStyle} autoComplete="off" onChange={handleChange} required />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="price_usd">Price USD</label>
-        <input id="price_usd" name="price_usd" type="text" className={inputStyle} autoComplete="off" onChange={handleChange} required />
+        <input id="price_usd" name="price_usd" type="number" className={inputStyle} autoComplete="off" onChange={handleChange} required />
       </div>
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
@@ -175,7 +175,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types, eventList }) {
       <div className={classes.modalGridForm}>
         <label htmlFor="event">Choose Event</label>
         <select id="event" name="event" className="bg-white select select-ghost select-sm" onChange={handleChange} defaultValue="">
-          <option value="" disabled>
+          <option value="">
             Pick one (only if you pick yes above)
           </option>
           {eventList.map((event) => (
@@ -198,15 +198,15 @@ export default function AddFishForm({ setIsOpen, onSubmit, types, eventList }) {
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountPercentage">Discount%</label>
-        <input id="discountPercentage" name="discountPercentage" type="text" className={inputStyle} autoComplete="off" placeholder="Fill, if only you input yes on discount" onChange={handleChange} />
+        <input id="discountPercentage" name="discountPercentage" type="number" className={inputStyle} autoComplete="off" placeholder="Fill, if only you input yes on discount" onChange={handleChange} />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountPriceIdr">Discount IDR</label>
-        <input id="discountPriceIdr" name="discountPriceIdr" type="text" className={inputStyle} autoComplete="off" placeholder="Calculated discount price in IDR" onChange={handleChange} value={formData.discountPriceIdr} />
+        <input id="discountPriceIdr" name="discountPriceIdr" type="number" className={inputStyle} autoComplete="off" placeholder="Calculated discount price in IDR" onChange={handleChange} value={formData.discountPriceIdr} />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountPriceUsd">Discount USD</label>
-        <input id="discountPriceUsd" name="discountPriceUsd" type="text" className={inputStyle} autoComplete="off" placeholder="Calculated discount price in IDR" onChange={handleChange} value={formData.discountPriceUsd} />
+        <input id="discountPriceUsd" name="discountPriceUsd" type="number" className={inputStyle} autoComplete="off" placeholder="Calculated discount price in IDR" onChange={handleChange} value={formData.discountPriceUsd} />
       </div>
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
