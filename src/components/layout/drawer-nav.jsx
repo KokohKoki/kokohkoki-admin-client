@@ -1,43 +1,37 @@
-import { LogOut } from "lucide-react";
 import { Settings, Menu } from "lucide-react";
 import { useAuth } from "../../context/use-context";
+import Logout from "../auth/logout";
+import { Link } from "react-router-dom";
 
 export default function SideDrawer() {
   const { userPayload } = useAuth();
   const username = userPayload?.username;
-  const handleLogout = () => {
-    sessionStorage.clear();
-    window.location.href = "/";
-  };
+
   return (
     <div className="drawer">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
-        <label
-          htmlFor="my-drawer"
-          className="flex transition duration-200 hover:text-rose-800"
-        >
+        <label htmlFor="my-drawer" className="flex transition duration-200 hover:text-rose-800">
           <Menu size={30} />
         </label>
       </div>
       <div className="drawer-side">
-        <label
-          htmlFor="my-drawer"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
+        <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
         <ul className="menu p-4 w-80 min-h-full bg-white text-gray-700">
           <span className="font-bold tracking-wider text-lg">Menu</span>
           <span>{username}</span>
           <div className="w-full h-[2px] bg-gray-300 opacity-30 my-2" />
           <li>
-            <a>Manage Fish</a>
+            <Link to="/dashboard">Manage Fishes</Link>
           </li>
           <li>
-            <a>Manage Types & Events</a>
+            <Link to="/dashboard/type">Manage Types</Link>
           </li>
           <li>
-            <a>Manage Discount</a>
+            <Link to="/dashboard/event">Manage Events</Link>
+          </li>
+          <li>
+            <a>Manage Coupon</a>
           </li>
           <li>
             <a>Manage Schedule</a>
@@ -50,10 +44,7 @@ export default function SideDrawer() {
             </a>
           </li>
           <li>
-            <a onClick={handleLogout}>
-              <LogOut size={18} />
-              Logout
-            </a>
+            <Logout />
           </li>
         </ul>
       </div>

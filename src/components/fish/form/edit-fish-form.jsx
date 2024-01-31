@@ -132,6 +132,7 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
           <option value={false}>No</option>
         </select>
       </div>
+      <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
         <label htmlFor="isEvent">Is Event ?</label>
         <select id="isEvent" name="isEvent" className="bg-white select select-ghost select-sm" value={formData.isEvent} onChange={handleChange}>
@@ -142,7 +143,7 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
       <div className={classes.modalGridForm}>
         <label htmlFor="event">Change Event</label>
         <select id="event" name="event" className="bg-white select select-ghost select-sm" value={formData.event} onChange={handleChange}>
-          <option value="" disabled>
+          <option value="">
             Pick one (only if you pick yes above)
           </option>
           {eventList.map((event) => (
