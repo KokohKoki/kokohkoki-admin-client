@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Logo from "../../components/Logo";
 import { API_URL } from "../../utils/baseURL/API_URL";
 import backgroundImage from "../../assets/KokohKoki.png";
+import "../../index.css";
 
 function Copyright(props) {
   return (
