@@ -3,17 +3,17 @@ import { Trash2 } from "lucide-react";
 import { useAuth } from "../../context/use-context";
 import { deleteEvent } from "../../api/event-api";
 
-export default function DeleteEvent({ fishId, onDelete }) {
+export default function DeleteEvent({ eventId, onDelete }) {
   const { userToken } = useAuth();
 
   const handleDeleteEvent = async () => {
     try {
-      await deleteEvent(userToken, fishId);
+      await deleteEvent(userToken, eventId);
       if (onDelete) {
         onDelete();
       }
     } catch (error) {
-      console.error("Failed to delete fish:", error);
+      console.error("Failed to delete event", error);
     }
   };
 

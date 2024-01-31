@@ -19,3 +19,23 @@ export const createType = async (name) => {
     throw error;
   }
 };
+
+export const deleteType = async (typeId) => {
+  try {
+    const response = await api.delete(`/types/${typeId}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const editType = async (typeId, name) => {
+  try {
+    const response = await api.put(`/types/${typeId}`, { name });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

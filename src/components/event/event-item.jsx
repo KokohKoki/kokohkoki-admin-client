@@ -17,7 +17,7 @@ export default function EventItem({ _id, name, reFetchEvents }) {
             <Pen size={20} className="text-rose-500 transition duration-150 hover:text-green-500" />
           </div>
           <div>
-            <DeleteEvent fishId={_id} onDelete={reFetchEvents} />
+            <DeleteEvent eventId={_id} onDelete={reFetchEvents} />
           </div>
         </div>
       </div>

@@ -2,13 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import ContentWrapper from "../components/UI/content-wrapper";
 import { getAllTypes } from "../api/type-api";
 import TypeItem from "../components/type/type-item";
-import AddType from "../components/type/add-type";
+import AddType from "../components/type/add-type-modal";
 
 export default function ManageTypePage() {
   const [types, setTypes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  console.log(types);
 
   const fetchTypes = useCallback(async () => {
     setLoading(true);
@@ -34,11 +33,13 @@ export default function ManageTypePage() {
     <>
       <section id="type-section" className="section-wrapper">
         <div className="flex flex-wrap justify-between items-center mb-3">
-          <button className="bg-rose-500 text-white px-3 py-2.5 rounded-md">Add Type</button>
+          <button className="bg-rose-500 text-white px-3 py-2.5 rounded-md" onClick={() => setIsOpen(true)}>
+            Add Type
+          </button>
         </div>
         <ContentWrapper loading={loading}>
           {types.map((type) => (
-            <TypeItem key={type._id} {...type} />
+            <TypeItem key={type._id} {...type} reFetchType={reFetchTypes} />
           ))}
         </ContentWrapper>
       </section>

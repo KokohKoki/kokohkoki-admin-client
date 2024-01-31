@@ -1,23 +1,24 @@
 /* eslint-disable react/prop-types */
-import { X } from "lucide-react";
+
 import { useEffect } from "react";
+import { createType } from "../../api/type-api";
+// import { useAuth } from "../../context/use-context";
 import ReactDOM from "react-dom";
-import classes from "./scss/event.module.scss";
-import { useAuth } from "../../context/use-context";
-import EditEventForm from "./forms/edit-event-form";
-import { editEvent } from "../../api/event-api";
+import { X } from "lucide-react";
+import classes from "./scss/type.module.scss";
+import AddTypeForm from "./forms/add-type-form";
 
-export default function EditEvent({ isOpen, setIsOpen, onEdit, eventId, name }) {
-  const { userToken } = useAuth();
+export default function AddType({ isOpen, setIsOpen, onAdd }) {
+  // const { userToken } = useAuth();
 
-  const handleEdit = async (eventName) => {
+  const handleAddType = async (name) => {
     try {
-      await editEvent(userToken, eventId, eventName);
-      if (onEdit) {
-        onEdit();
+      await createType(name);
+      if (onAdd) {
+        onAdd();
       }
     } catch (error) {
-      console.error("Failed to edit event:", error);
+      console.error("Failed to add type:", error);
     } finally {
       setIsOpen(false);
     }
@@ -40,11 +41,12 @@ export default function EditEvent({ isOpen, setIsOpen, onEdit, eventId, name }) 
         <X />
       </button>
       <div onClick={(e) => e.stopPropagation()} className={classes.modalCard}>
-        <h1 className="text-xl flex justify-center text-rose-500 font-bold my-3">Edit Event</h1>
-        <EditEventForm name={name} setIsOpen={setIsOpen} onSubmit={handleEdit} />
+        <h1 className="text-xl flex justify-center text-rose-500 font-bold my-3">Add Type</h1>
+        <AddTypeForm onSubmit={handleAddType} setIsOpen={setIsOpen} />
       </div>
     </div>
   );
+
   if (!isOpen) return <></>;
 
   return ReactDOM.createPortal(content, document.getElementById("portal"));

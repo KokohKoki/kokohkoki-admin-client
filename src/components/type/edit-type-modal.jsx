@@ -1,23 +1,20 @@
 /* eslint-disable react/prop-types */
+import ReactDOM from "react-dom";
+import classes from "./scss/type.module.scss";
 import { X } from "lucide-react";
 import { useEffect } from "react";
-import ReactDOM from "react-dom";
-import classes from "./scss/event.module.scss";
-import { useAuth } from "../../context/use-context";
-import EditEventForm from "./forms/edit-event-form";
-import { editEvent } from "../../api/event-api";
+import EditTypeForm from "./forms/edit-type-form";
+import { editType } from "../../api/type-api";
 
-export default function EditEvent({ isOpen, setIsOpen, onEdit, eventId, name }) {
-  const { userToken } = useAuth();
-
-  const handleEdit = async (eventName) => {
+export default function EditType({ isOpen, setIsOpen, onEdit, typeId, name }) {
+  const handleEdit = async (typeName) => {
     try {
-      await editEvent(userToken, eventId, eventName);
+      await editType(typeId, typeName);
       if (onEdit) {
         onEdit();
       }
     } catch (error) {
-      console.error("Failed to edit event:", error);
+      console.error("Failed to edit type:", error);
     } finally {
       setIsOpen(false);
     }
@@ -41,10 +38,11 @@ export default function EditEvent({ isOpen, setIsOpen, onEdit, eventId, name }) 
       </button>
       <div onClick={(e) => e.stopPropagation()} className={classes.modalCard}>
         <h1 className="text-xl flex justify-center text-rose-500 font-bold my-3">Edit Event</h1>
-        <EditEventForm name={name} setIsOpen={setIsOpen} onSubmit={handleEdit} />
+        <EditTypeForm setIsOpen={setIsOpen} name={name} onSubmit={handleEdit} />
       </div>
     </div>
   );
+
   if (!isOpen) return <></>;
 
   return ReactDOM.createPortal(content, document.getElementById("portal"));
