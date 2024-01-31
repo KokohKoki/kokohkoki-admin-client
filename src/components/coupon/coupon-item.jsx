@@ -2,8 +2,13 @@
 import classes from "./scss/coupon.module.scss";
 import { idrFormatter, usdFormatter } from "../../utils/formatter";
 import DeleteCoupon from "./delete-coupon";
+import { Pen } from "lucide-react";
+import EditCoupon from "./edit-coupon-modal";
+import { useState } from "react";
 
 export default function CouponItem({ reFetchCoupon, discountCode, discountPercentage, discountMaxPriceIdr, discountMaxPriceUsd, expirationDate }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <div className={`${classes.fishes} flex gap-2 items-start`}>
@@ -26,15 +31,25 @@ export default function CouponItem({ reFetchCoupon, discountCode, discountPercen
         </div>
 
         <div className="flex flex-col gap-3">
-          {/* <div>
+          <div onClick={() => setIsOpen(true)}>
             <Pen size={20} className="text-rose-500 transition duration-150 hover:text-green-500" />
-          </div> */}
+          </div>
           <div>
             <DeleteCoupon couponName={discountCode} onDelete={reFetchCoupon} />
           </div>
         </div>
       </div>
       <div className="w-full h-[2px] bg-gray-500 opacity-50 my-2" />
+      <EditCoupon
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onEdit={reFetchCoupon}
+        couponName={discountCode}
+        discountMaxPriceIdr={discountMaxPriceIdr}
+        discountMaxPriceUsd={discountMaxPriceUsd}
+        discountPercentage={discountPercentage}
+        expirationDate={expirationDate}
+      />
     </>
   );
 }

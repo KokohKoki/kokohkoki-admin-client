@@ -36,4 +36,14 @@ export const deleteCoupon = async (token, coupon) => {
   }
 };
 
-
+export const editCoupon = async (token, formData, couponName) => {
+  try {
+    const response = await api.put(`/discounts/${couponName}`, formData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
