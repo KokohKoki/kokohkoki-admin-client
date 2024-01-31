@@ -15,10 +15,16 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Logo from "../../components/Logo";
 import style from "./loginPage.module.css";
 import { API_URL } from "../../utils/baseURL/API_URL";
+import backgroundImage from "../../assets/KokohKoki.png";
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
       {"Copyright © "}
       <Link color="inherit" href="#">
         KokohKoki
@@ -83,7 +89,14 @@ export default function SignInSide() {
   return (
     <div className="section-wrapper">
       <ThemeProvider theme={defaultTheme}>
-        <Grid container component="main" sx={{ height: "100%", width: "100%" }}>
+        <Grid
+          container
+          component="main"
+          sx={{
+            height: "100%",
+            width: "100%",
+          }}
+        >
           <CssBaseline />
           <Grid
             item
@@ -91,8 +104,7 @@ export default function SignInSide() {
             sm={4}
             md={7}
             sx={{
-              backgroundImage:
-                "url(https://kokohkoki.com/assets/about-us/about-us-hero.webp), linear-gradient(rgb(20, 13, 27), rgba(0, 0, 0, 1))",
+              backgroundImage: `url(${backgroundImage})`,
               backgroundRepeat: "no-repeat",
               backgroundColor: "dark",
               backgroundSize: "cover",
