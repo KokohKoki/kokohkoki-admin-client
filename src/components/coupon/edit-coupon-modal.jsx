@@ -1,23 +1,23 @@
 /* eslint-disable react/prop-types */
-import ReactDOM from "react-dom";
-import classes from "./scss/type.module.scss";
-import { X } from "lucide-react";
 import { useEffect } from "react";
-import EditTypeForm from "./forms/edit-type-form";
-import { editType } from "../../api/type-api";
+import ReactDOM from "react-dom";
+import { editCoupon } from "../../api/coupon-api";
 import { useAuth } from "../../context/use-context";
+import classes from "./scss/coupon.module.scss";
+import EditCouponForm from "./forms/edit-coupon-form";
+import { X } from "lucide-react";
 
-export default function EditType({ isOpen, setIsOpen, onEdit, typeId, name }) {
+export default function EditCoupon({ isOpen, setIsOpen, onEdit, couponName, discountPercentage, discountMaxPriceIdr, discountMaxPriceUsd, expirationDate }) {
   const { userToken } = useAuth();
 
-  const handleEdit = async (typeName) => {
+  const handleEditCoupon = async (formData) => {
     try {
-      await editType(typeId, typeName, userToken);
+      await editCoupon(userToken, formData, couponName);
       if (onEdit) {
         onEdit();
       }
     } catch (error) {
-      console.error("Failed to edit type:", error);
+      console.error("Failed to add fish:", error);
     } finally {
       setIsOpen(false);
     }
@@ -40,8 +40,8 @@ export default function EditType({ isOpen, setIsOpen, onEdit, typeId, name }) {
         <X />
       </button>
       <div onClick={(e) => e.stopPropagation()} className={classes.modalCard}>
-        <h1 className="text-xl flex justify-center text-rose-500 font-bold my-3">Edit Event</h1>
-        <EditTypeForm setIsOpen={setIsOpen} name={name} onSubmit={handleEdit} />
+        <h1 className="text-xl flex justify-center text-rose-500 font-bold my-3">Edit Coupon: {couponName}</h1>
+        <EditCouponForm setIsOpen={setIsOpen} onSubmit={handleEditCoupon} discountPercentage={discountPercentage} discountMaxPriceIdr={discountMaxPriceIdr} discountMaxPriceUsd={discountMaxPriceUsd} expirationDate={expirationDate} />
       </div>
     </div>
   );
