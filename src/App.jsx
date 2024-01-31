@@ -1,29 +1,30 @@
-import { LoginPage, DashboardPage } from "./pages";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-} from "react-router-dom";
-import PropTypes from "prop-types";
+import { LoginPage } from "./pages";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import "./App.css";
-
-const isAuthenticated = () => {
-  return sessionStorage.getItem("userToken") !== null;
-};
-
-const ProtectedRoute = ({ element }) => {
-  return isAuthenticated() ? element : <Navigate to="/" replace />;
-};
+import Layout from "./components/layout/layout";
+import { useAuth } from "./context/use-context";
+import ManageFishPage from "./pages/manage-fishes-page";
 
 function App() {
+  const { isLoggedIn } = useAuth();
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: <LoginPage />,
     },
     {
-      path: "/dashboard",
-      element: <ProtectedRoute element={<DashboardPage />} />,
+      element: <Layout />,
+      children: [
+        // {
+        //   path: "/dashboard",
+        //   element: isLoggedIn ? <DashboardPage /> : <Navigate to="/" />,
+        // },
+        {
+          path: "/dashboard",
+          element: isLoggedIn ? <ManageFishPage /> : <Navigate to="/" />,
+        },
+      ],
     },
   ]);
 
@@ -33,9 +34,5 @@ function App() {
     </>
   );
 }
-
-ProtectedRoute.propTypes = {
-  element: PropTypes.element.isRequired,
-};
 
 export default App;

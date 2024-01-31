@@ -14,6 +14,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Logo from "../../components/Logo";
 import style from "./loginPage.module.css";
+import { API_URL } from "../../utils/baseURL/API_URL";
+import backgroundImage from "../../assets/KokohKoki.png";
 
 function Copyright(props) {
   return (
@@ -48,7 +50,7 @@ export default function SignInSide() {
     });
     try {
       const data = new FormData(event.currentTarget);
-      const response = await axios.post(`https://api.kokohkoki.com/api/v1/auth/login`, {
+      const response = await axios.post(`${API_URL}/auth/login`, {
         username: data.get("username"),
         password: data.get("password"),
       });
@@ -85,85 +87,101 @@ export default function SignInSide() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: "100%", width: "100%" }}>
-        <CssBaseline />
+    <div className="section-wrapper">
+      <ThemeProvider theme={defaultTheme}>
         <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
+          container
+          component="main"
           sx={{
-            backgroundImage:
-              "url(https://kokohkoki.com/assets/about-us/about-us-hero.webp), linear-gradient(rgb(20, 13, 27), rgba(0, 0, 0, 1))",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: "dark",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            height: "100%",
+            width: "100%",
           }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box
+        >
+          <CssBaseline />
+          <Grid
+            item
+            xs={false}
+            sm={4}
+            md={7}
             sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundRepeat: "no-repeat",
+              backgroundColor: "dark",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
+          />
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={5}
+            component={Paper}
+            elevation={6}
+            square
           >
-            <Logo className={style.logo} />
-            <Typography component="h1" variant="h5">
-              Admin Panel
-            </Typography>
             <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
+              sx={{
+                my: 8,
+                mx: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="Usename"
-                name="username"
-                autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+              <Logo className={style.logo} />
+              <Typography component="h1" variant="h5">
+                Admin Panel
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 1 }}
               >
-                Log In
-              </Button>
-              {/* <Grid container>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Usename"
+                  name="username"
+                  autoFocus
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                />
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Log In
+                </Button>
+                {/* <Grid container>
                 <Grid item>
                   <Link href="#" variant="body2">
                     {"Register Account"}
                   </Link>
                 </Grid>
               </Grid> */}
-              <Copyright sx={{ mt: 5 }} />
+                <Copyright sx={{ mt: 5 }} />
+              </Box>
             </Box>
-          </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </ThemeProvider>
+      </ThemeProvider>
+    </div>
   );
 }
