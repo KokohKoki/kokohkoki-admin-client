@@ -4,6 +4,7 @@ import "./App.css";
 import Layout from "./components/layout/layout";
 import { useAuth } from "./context/use-context";
 import ManageFishPage from "./pages/manage-fishes-page";
+import ManageTypePage from "./pages/manage-types-page";
 
 function App() {
   const { isLoggedIn } = useAuth();
@@ -23,6 +24,10 @@ function App() {
         {
           path: "/dashboard",
           element: isLoggedIn ? <ManageFishPage /> : <Navigate to="/" />,
+        },
+        {
+          path: "/dashboard/type",
+          element: isLoggedIn ? <ManageTypePage /> : <Navigate to="/" />,
         },
       ],
     },
