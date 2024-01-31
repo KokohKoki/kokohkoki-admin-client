@@ -5,11 +5,14 @@ import { X } from "lucide-react";
 import { useEffect } from "react";
 import EditTypeForm from "./forms/edit-type-form";
 import { editType } from "../../api/type-api";
+import { useAuth } from "../../context/use-context";
 
 export default function EditType({ isOpen, setIsOpen, onEdit, typeId, name }) {
+  const { userToken } = useAuth();
+
   const handleEdit = async (typeName) => {
     try {
-      await editType(typeId, typeName);
+      await editType(typeId, typeName, userToken);
       if (onEdit) {
         onEdit();
       }
