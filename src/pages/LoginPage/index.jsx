@@ -18,12 +18,7 @@ import { API_URL } from "../../utils/baseURL/API_URL";
 
 function Copyright(props) {
   return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {"Copyright © "}
       <Link color="inherit" href="#">
         KokohKoki
