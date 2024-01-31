@@ -17,7 +17,7 @@ export default function ManageCouponPage() {
       const data = await getAllCoupons(userToken);
       setCoupons(data.data.reverse());
     } catch (error) {
-      console.error("Failed to fetch types:", error);
+      console.error("Failed to fetch coupon:", error);
     } finally {
       setLoading(false);
     }
