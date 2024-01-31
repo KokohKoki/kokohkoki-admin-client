@@ -5,16 +5,27 @@ import { useAuth } from "../../context/use-context";
 export default function SideDrawer() {
   const { userPayload } = useAuth();
   const username = userPayload?.username;
+  const handleLogout = () => {
+    sessionStorage.clear();
+    window.location.href = "/";
+  };
   return (
     <div className="drawer">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
-        <label htmlFor="my-drawer" className="flex transition duration-200 hover:text-rose-800">
+        <label
+          htmlFor="my-drawer"
+          className="flex transition duration-200 hover:text-rose-800"
+        >
           <Menu size={30} />
         </label>
       </div>
       <div className="drawer-side">
-        <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
+        <label
+          htmlFor="my-drawer"
+          aria-label="close sidebar"
+          className="drawer-overlay"
+        ></label>
         <ul className="menu p-4 w-80 min-h-full bg-white text-gray-700">
           <span className="font-bold tracking-wider text-lg">Menu</span>
           <span>{username}</span>
@@ -39,7 +50,7 @@ export default function SideDrawer() {
             </a>
           </li>
           <li>
-            <a>
+            <a onClick={handleLogout}>
               <LogOut size={18} />
               Logout
             </a>
