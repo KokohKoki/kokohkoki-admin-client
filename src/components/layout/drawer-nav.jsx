@@ -31,10 +31,10 @@ export default function SideDrawer() {
             <Link to="/dashboard/event">Manage Events</Link>
           </li>
           <li>
-            <Link to="/dashboard/coupon">Manage Coupon</Link>
+            <Link to="/dashboard/coupon">Manage Coupons</Link>
           </li>
           <li>
-            <a>Manage Schedule</a>
+          <Link to="/dashboard/schedule">Manage Schedules</Link>
           </li>
           <div className="w-full h-[2px] bg-gray-300 opacity-30 mt-5" />
           <li>
