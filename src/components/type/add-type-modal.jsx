@@ -2,18 +2,18 @@
 
 import { useEffect } from "react";
 import { createType } from "../../api/type-api";
-// import { useAuth } from "../../context/use-context";
+import { useAuth } from "../../context/use-context";
 import ReactDOM from "react-dom";
 import { X } from "lucide-react";
 import classes from "./scss/type.module.scss";
 import AddTypeForm from "./forms/add-type-form";
 
 export default function AddType({ isOpen, setIsOpen, onAdd }) {
-  // const { userToken } = useAuth();
+  const { userToken } = useAuth();
 
   const handleAddType = async (name) => {
     try {
-      await createType(name);
+      await createType(name, userToken);
       if (onAdd) {
         onAdd();
       }
