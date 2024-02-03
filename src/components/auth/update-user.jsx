@@ -4,24 +4,32 @@ import { useAuth } from "../../context/use-context";
 import ReactDOM from "react-dom";
 import classes from "./scss/auth.module.scss";
 import { useEffect, useState } from "react";
-import { updateUser } from "../../api/auth-api";
+import { loginApi, updateUser } from "../../api/auth-api";
 import UpdateUserForm from "./forms/edit-user-form";
 
-export default function UpdateUser({ isOpen, setIsOpen, currentUsername, userId }) {
-  const { userToken } = useAuth();
+export default function UpdateUser({ isOpen, setIsOpen, userId }) {
+  const { userToken, userPayload } = useAuth();
   const [error, setError] = useState("");
-  const [username, setUsername] = useState(currentUsername);
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (userPayload?.username) {
+      setUsername(userPayload.username);
+    }
+  }, [userPayload]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await updateUser(userToken, userId, username, password);
+      const newToken = await loginApi(username, password);
+      sessionStorage.setItem("userToken", newToken);
+      setIsOpen(false);
+      window.location.reload();
     } catch (error) {
       console.error("Failed to edit user:", error);
       setError(error.response?.data.message);
-    } finally {
-      setIsOpen(false);
     }
   };
 

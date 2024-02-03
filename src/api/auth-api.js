@@ -15,3 +15,16 @@ export const updateUser = async (token, userId, username, password) => {
     throw error;
   }
 };
+
+export const loginApi = async (username, password) => {
+  try {
+    const response = await api.post("/auth/login", {
+      username,
+      password,
+    });
+    return response.data.data.token;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

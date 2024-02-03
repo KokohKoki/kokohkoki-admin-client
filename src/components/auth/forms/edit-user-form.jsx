@@ -4,6 +4,7 @@ import { passwordSchema } from "../../../utils/validation";
 import classes from "../scss/auth.module.scss";
 import { Eye, EyeOff } from "lucide-react";
 
+
 export default function UpdateUserForm({ setIsOpen, onSubmit, error, username, setUsername, password, setPassword }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -38,10 +39,10 @@ export default function UpdateUserForm({ setIsOpen, onSubmit, error, username, s
   const inputStyle = "input input-md w-full bg-white";
   return (
     <>
-      <form onSubmit={onSubmit} className="flex flex-col gap-2 my-4 justify-start text-gray-700 mx-2 font-medium">
+      <form onSubmit={onSubmit} className="flex flex-col gap-2 my-4 justify-start text-gray-700 mx-2 font-medium text-sm">
         <div className={classes.modalGridForm}>
-          <label htmlFor="username">Change Username</label>
-          <input id="username" name="username" type="text" className={inputStyle} value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="off" />
+          <label htmlFor="username">Change Name (optional)</label>
+          <input id="username" name="username" type="text" className={inputStyle} value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="off" required />
         </div>
         <div className={classes.modalGridForm}>
           <label htmlFor="password">Change Password</label>
