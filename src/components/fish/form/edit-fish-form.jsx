@@ -27,7 +27,6 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
     image2: images?.image2,
     image3: images?.image3,
   });
-  console.log(formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -118,11 +117,11 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
         <label htmlFor="price">Price IDR</label>
-        <input id="price" name="price" type="text" className={inputStyle} autoComplete="off" value={formData.price} onChange={handleChange} />
+        <input id="price" name="price" type="number" className={inputStyle} autoComplete="off" value={formData.price} onChange={handleChange} />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="price_usd">Price USD</label>
-        <input id="price_usd" name="price_usd" type="text" className={inputStyle} autoComplete="off" value={formData.price_usd} onChange={handleChange} />
+        <input id="price_usd" name="price_usd" type="number" className={inputStyle} autoComplete="off" value={formData.price_usd} onChange={handleChange} />
       </div>
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
@@ -132,6 +131,7 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
           <option value={false}>No</option>
         </select>
       </div>
+      <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
         <label htmlFor="isEvent">Is Event ?</label>
         <select id="isEvent" name="isEvent" className="bg-white select select-ghost select-sm" value={formData.isEvent} onChange={handleChange}>
@@ -142,7 +142,7 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
       <div className={classes.modalGridForm}>
         <label htmlFor="event">Change Event</label>
         <select id="event" name="event" className="bg-white select select-ghost select-sm" value={formData.event} onChange={handleChange}>
-          <option value="" disabled>
+          <option value="">
             Pick one (only if you pick yes above)
           </option>
           {eventList.map((event) => (
@@ -162,15 +162,15 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountPercentage">Discount%</label>
-        <input id="discountPercentage" name="discountPercentage" type="text" className={inputStyle} autoComplete="off" value={formData.discountPercentage} onChange={handleChange} />
+        <input id="discountPercentage" name="discountPercentage" type="number" className={inputStyle} autoComplete="off" value={formData.discountPercentage} onChange={handleChange} />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountPriceIdr">Discount IDR</label>
-        <input id="discountPriceIdr" name="discountPriceIdr" type="text" className={inputStyle} autoComplete="off" value={formData.discountPriceIdr} onChange={handleChange} />
+        <input id="discountPriceIdr" name="discountPriceIdr" type="number" className={inputStyle} autoComplete="off" value={formData.discountPriceIdr} onChange={handleChange} />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountPriceUsd">Discount IDR</label>
-        <input id="discountPriceUsd" name="discountPriceUsd" type="text" className={inputStyle} autoComplete="off" value={formData.discountPriceUsd} onChange={handleChange} />
+        <input id="discountPriceUsd" name="discountPriceUsd" type="number" className={inputStyle} autoComplete="off" value={formData.discountPriceUsd} onChange={handleChange} />
       </div>
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
