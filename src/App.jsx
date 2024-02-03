@@ -8,6 +8,7 @@ import ManageTypePage from "./pages/manage-types-page";
 import ManageEventPage from "./pages/manage-events-page";
 import ManageCouponPage from "./pages/manage-coupon-page";
 import ManageSchedulePage from "./pages/manage-schedule-page";
+import SettingPage from "./pages/setting-page";
 
 function App() {
   const { isLoggedIn } = useAuth();
@@ -43,6 +44,10 @@ function App() {
         {
           path: "/dashboard/schedule",
           element: isLoggedIn ? <ManageSchedulePage /> : <Navigate to="/" />,
+        },
+        {
+          path: "/dashboard/setting",
+          element: isLoggedIn ? <SettingPage /> : <Navigate to="/" />,
         },
       ],
     },
