@@ -15,5 +15,5 @@ export const couponFormSchema = Yup.object().shape({
 
 export const passwordSchema = Yup.string()
   .min(8, "Password must be at least 8 characters")
-  // .matches(/^(?=.*[A-Za-z])(?=.*\d)/, "Password must at least contain alphabet and number")
+  .matches(/^(?=.*[A-Za-z])(?=.*\d)/, "Password must at least contain alphabet and number")
   .required("Password is required");
