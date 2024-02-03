@@ -34,14 +34,14 @@ export default function SideDrawer() {
             <Link to="/dashboard/coupon">Manage Coupons</Link>
           </li>
           <li>
-          <Link to="/dashboard/schedule">Manage Schedules</Link>
+            <Link to="/dashboard/schedule">Manage Schedules</Link>
           </li>
           <div className="w-full h-[2px] bg-gray-300 opacity-30 mt-5" />
           <li>
-            <a>
+            <div>
               <Settings size={18} />
-              Settings
-            </a>
+              <Link to="/dashboard/setting">Settings</Link>
+            </div>
           </li>
           <li>
             <Logout />
