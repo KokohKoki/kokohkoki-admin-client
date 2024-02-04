@@ -1,5 +1,1 @@
-export const API_URL = "http://localhost:5002/api/v1";
-
-
-// http://localhost:5002/api/v1
-// https://api.kokohkoki.com/api/v1
+export const API_URL = import.meta.env.VITE_API_URL;
