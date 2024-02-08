@@ -7,13 +7,18 @@ export default function DeleteEvent({ eventId, onDelete }) {
   const { userToken } = useAuth();
 
   const handleDeleteEvent = async () => {
-    try {
-      await deleteEvent(userToken, eventId);
-      if (onDelete) {
-        onDelete();
+    const isConfirmed = window.confirm("Are you sure you want to delete this event?");
+    if (isConfirmed) {
+      try {
+        await deleteEvent(userToken, eventId);
+        if (onDelete) {
+          onDelete();
+        }
+      } catch (error) {
+        console.error("Failed to delete event", error);
       }
-    } catch (error) {
-      console.error("Failed to delete event", error);
+    } else {
+      return;
     }
   };
 

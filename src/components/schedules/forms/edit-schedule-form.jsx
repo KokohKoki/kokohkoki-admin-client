@@ -67,7 +67,6 @@ export default function EditScheduleForm({ setIsOpen, onSubmit, scheduleName, sc
     const hasErrors = Object.values(formErrors).some((error) => error !== undefined);
 
     if (hasErrors) {
-      console.log("not submitted error");
       return;
     }
 
