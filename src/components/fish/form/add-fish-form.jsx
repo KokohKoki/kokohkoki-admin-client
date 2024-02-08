@@ -68,12 +68,26 @@ export default function AddFishForm({ setIsOpen, onSubmit, types, eventList }) {
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
+    const maxFileSize = 1024 * 1024;
+
+    if (file.size > maxFileSize) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [e.target.name]: "The image size should not exceed 1MB",
+      }));
+      return;
+    }
+
     const storage = getStorage(app);
     const storageRef = ref(storage, "fish_images/" + file.name);
 
     try {
       const snapshot = await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(snapshot.ref);
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [e.target.name]: undefined,
+      }));
       setFormData({ ...formData, [e.target.name]: downloadURL });
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -82,11 +96,38 @@ export default function AddFishForm({ setIsOpen, onSubmit, types, eventList }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormErrors({});
+    const hasErrors = Object.values(formErrors).some((error) => error !== undefined);
+
+    if (hasErrors) {
+      return;
+    }
 
     try {
       await fishFormSchema.validate(formData, { abortEarly: false });
+
       onSubmit(formData);
+      setFormErrors({});
+      setFormData({
+        name: "",
+        gender: "",
+        type: "",
+        price: "",
+        price_usd: "",
+        size: "",
+        videoURL: "",
+        desc: "",
+        isAvailable: "",
+        isNewArrival: "",
+        isEvent: "",
+        event: "",
+        isDiscount: false,
+        discountPercentage: 0,
+        discountPriceIdr: 0,
+        discountPriceUsd: 0,
+        image1: "",
+        image2: "",
+        image3: "",
+      });
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errors = error.inner.reduce((acc, err) => {
@@ -175,9 +216,7 @@ export default function AddFishForm({ setIsOpen, onSubmit, types, eventList }) {
       <div className={classes.modalGridForm}>
         <label htmlFor="event">Choose Event</label>
         <select id="event" name="event" className="bg-white select select-ghost select-sm" onChange={handleChange} defaultValue="">
-          <option value="">
-            Pick one (only if you pick yes above)
-          </option>
+          <option value="">Pick one (only if you pick yes above)</option>
           {eventList.map((event) => (
             <option key={event._id} value={event.name}>
               {event.name}

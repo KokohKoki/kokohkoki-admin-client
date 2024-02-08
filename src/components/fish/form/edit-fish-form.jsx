@@ -6,6 +6,7 @@ import { app } from "../../../utils/firebase";
 import { ImagePlus } from "lucide-react";
 
 export default function EditFishForm({ isAvailable, name, gender, type, price, price_usd, images, size, desc, videoURL, discount, isEvent, event, isNewArrival, setIsOpen, onSubmit, typesData, eventList }) {
+  const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     name: name,
     gender: gender,
@@ -65,12 +66,26 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
+    const maxFileSize = 1024 * 1024;
+
+    if (file.size > maxFileSize) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [e.target.name]: "The image size should not exceed 1MB",
+      }));
+      return;
+    }
+
     const storage = getStorage(app);
     const storageRef = ref(storage, "fish_images/" + file.name);
 
     try {
       const snapshot = await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(snapshot.ref);
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [e.target.name]: undefined,
+      }));
       setFormData({ ...formData, [e.target.name]: downloadURL });
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -79,7 +94,15 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const hasErrors = Object.values(formErrors).some((error) => error !== undefined);
+
+    if (hasErrors) {
+      // console.log("not submitted error");
+      return;
+    }
+
     onSubmit(formData);
+    setFormErrors({});
   };
 
   const inputStyle = "input input-md w-full bg-white";
@@ -142,9 +165,7 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
       <div className={classes.modalGridForm}>
         <label htmlFor="event">Change Event</label>
         <select id="event" name="event" className="bg-white select select-ghost select-sm" value={formData.event} onChange={handleChange}>
-          <option value="">
-            Pick one (only if you pick yes above)
-          </option>
+          <option value="">Pick one (only if you pick yes above)</option>
           {eventList.map((event) => (
             <option key={event._id} value={event.name}>
               {event.name}
@@ -188,26 +209,33 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <h1 className="flex justify-center text-lg text-primary font-bold tracking-wider">Edit Image</h1>
       <div className={classes.modalGridForm}>
-        <div className="h-20 w-20">{images.image1 ? <img src={images?.image1} className="aspect-square object-cover rounded-lg bg-gray-300" /> : <ImagePlus className="h-full w-full p-1" />}</div>
+        <div className="h-20 w-20">{formData.image1 ? <img src={formData.image1} className="aspect-square object-cover rounded-lg bg-gray-300" alt="Uploaded" /> : <ImagePlus className="h-full w-full p-1" />}</div>
         <div>
           <span className="italic font-medium">Main Image</span>
           <input id="image1" name="image1" type="file" className={fileStyle} onChange={handleFileChange} />
         </div>
       </div>
       <div className={classes.modalGridForm}>
-        <div className="h-20 w-20">{images.image2 ? <img src={images?.image2} className="aspect-square object-cover rounded-lg bg-gray-300" /> : <ImagePlus className="h-full w-full p-1" />}</div>
+        <div className="h-20 w-20">{formData.image2 ? <img src={formData.image2} className="aspect-square object-cover rounded-lg bg-gray-300" /> : <ImagePlus className="h-full w-full p-1" />}</div>
         <div>
           <span className="italic font-medium">Sub Image 1</span>
           <input id="image2" name="image2" type="file" className={fileStyle} onChange={handleFileChange} />
         </div>
       </div>
       <div className={classes.modalGridForm}>
-        <div className="h-20 w-20">{images.image3 ? <img src={images?.image3} className="aspect-square object-cover rounded-lg bg-gray-300" /> : <ImagePlus className="h-full w-full p-1" />}</div>
+        <div className="h-20 w-20">{formData.image3 ? <img src={formData.image3} className="aspect-square object-cover rounded-lg bg-gray-300" /> : <ImagePlus className="h-full w-full p-1" />}</div>
         <div>
           <span className="italic font-medium">Sub Image 2</span>
           <input id="image3" name="image3" type="file" className={fileStyle} onChange={handleFileChange} />
         </div>
       </div>
+      {Object.keys(formErrors).length > 0 && (
+        <div className="error-messages text-rose-500 text-sm italic flex flex-col items-end justify-end">
+          {Object.values(formErrors).map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
+      )}
       <div className="flex gap-2 justify-end">
         <button type="reset" onClick={() => setIsOpen(false)} className="px-4 py-1.5 rounded-lg mt-4 text-white bg-rose-500 border-none transition duration-150 ease-in-out hover:opacity-75">
           Close
