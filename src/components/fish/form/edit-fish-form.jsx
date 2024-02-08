@@ -68,7 +68,7 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
     const file = e.target.files[0];
     const maxFileSize = 1024 * 1024;
 
-    if (file.size > maxFileSize) {
+    if (!file || file.size > maxFileSize) {
       setFormErrors((prevErrors) => ({
         ...prevErrors,
         [e.target.name]: "The image size should not exceed 1MB",
@@ -76,20 +76,35 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
       return;
     }
 
-    const storage = getStorage(app);
-    const storageRef = ref(storage, "fish_images/" + file.name);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob(async (blob) => {
+          const storage = getStorage(app);
+          const storageRef = ref(storage, `fish_images/${Date.now()}.webp`);
 
-    try {
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        [e.target.name]: undefined,
-      }));
-      setFormData({ ...formData, [e.target.name]: downloadURL });
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
+          try {
+            const snapshot = await uploadBytes(storageRef, blob);
+            const downloadURL = await getDownloadURL(snapshot.ref);
+            setFormData({ ...formData, [e.target.name]: downloadURL });
+            setFormErrors((prevErrors) => ({
+              ...prevErrors,
+              [e.target.name]: undefined,
+            }));
+          } catch (error) {
+            console.error("Error uploading file:", error);
+          }
+        }, "image/webp");
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = (e) => {
