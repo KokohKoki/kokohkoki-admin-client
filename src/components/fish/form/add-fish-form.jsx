@@ -5,6 +5,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "../../../utils/firebase";
 import { fishFormSchema } from "../../../utils/validation";
 import * as Yup from "yup";
+import { ImagePlus } from "lucide-react";
 
 export default function AddFishForm({ setIsOpen, onSubmit, types, eventList }) {
   const [formErrors, setFormErrors] = useState({});
@@ -277,16 +278,25 @@ export default function AddFishForm({ setIsOpen, onSubmit, types, eventList }) {
       </div>
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
-        <label htmlFor="image1">Main Image</label>
-        <input id="image1" name="image1" type="file" className={fileStyle} onChange={handleFileChange} />
+        <div className="h-20 w-20">{formData.image1 ? <img src={formData.image1} className="aspect-square object-cover rounded-lg bg-gray-300" alt="Uploaded" /> : <ImagePlus className="h-full w-full p-1 -ml-2" />}</div>
+        <div>
+          <label htmlFor="image1">Main Image</label>
+          <input id="image1" name="image1" type="file" className={fileStyle} onChange={handleFileChange} />
+        </div>
       </div>
       <div className={classes.modalGridForm}>
-        <label htmlFor="image2">Sub-Image 1</label>
-        <input id="image2" name="image2" type="file" className={fileStyle} onChange={handleFileChange} />
+        <div className="h-20 w-20">{formData.image2 ? <img src={formData.image2} className="aspect-square object-cover rounded-lg bg-gray-300" /> : <ImagePlus className="h-full w-full p-1 -ml-2" />}</div>
+        <div>
+          <label htmlFor="image2">Sub-Image 1</label>
+          <input id="image2" name="image2" type="file" className={fileStyle} onChange={handleFileChange} />
+        </div>
       </div>
       <div className={classes.modalGridForm}>
-        <label htmlFor="image3">Sub-Image 2</label>
-        <input id="image3" name="image3" type="file" className={fileStyle} onChange={handleFileChange} />
+        <div className="h-20 w-20">{formData.image3 ? <img src={formData.image3} className="aspect-square object-cover rounded-lg bg-gray-300" /> : <ImagePlus className="h-full w-full p-1 -ml-2" />}</div>
+        <div>
+          <label htmlFor="image3">Sub-Image 2</label>
+          <input id="image3" name="image3" type="file" className={fileStyle} onChange={handleFileChange} />
+        </div>
       </div>
       {Object.keys(formErrors).length > 0 && (
         <div className="error-messages text-rose-500 text-sm italic flex flex-col items-end justify-end">
