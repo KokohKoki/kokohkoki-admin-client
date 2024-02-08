@@ -4,8 +4,10 @@ import { useState } from "react";
 import classes from "../scss/schedule.module.scss";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "../../../utils/firebase";
+import { Image as LucideImage } from "lucide-react";
 
 export default function AddScheduleForm({ setIsOpen, onSubmit, nameError }) {
+  const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     scheduleName: "",
     scheduleImage: "",
@@ -21,21 +23,57 @@ export default function AddScheduleForm({ setIsOpen, onSubmit, nameError }) {
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    const storage = getStorage(app);
-    const storageRef = ref(storage, "schedule_images/" + file.name);
+    const maxFileSize = 1024 * 1024 * 2;
 
-    try {
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      setFormData({ ...formData, [e.target.name]: downloadURL });
-    } catch (error) {
-      console.error("Error uploading file:", error);
+    if (!file || file.size > maxFileSize) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [e.target.name]: "The image size should not exceed 2MB",
+      }));
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob(async (blob) => {
+          const storage = getStorage(app);
+          const storageRef = ref(storage, `schedule_images/${Date.now()}.webp`);
+
+          try {
+            const snapshot = await uploadBytes(storageRef, blob);
+            const downloadURL = await getDownloadURL(snapshot.ref);
+            setFormData({ ...formData, [e.target.name]: downloadURL });
+            setFormErrors((prevErrors) => ({
+              ...prevErrors,
+              [e.target.name]: undefined,
+            }));
+          } catch (error) {
+            console.error("Error uploading file:", error);
+          }
+        }, "image/webp");
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const hasErrors = Object.values(formErrors).some((error) => error !== undefined);
+
+    if (hasErrors) {
+      return;
+    }
+
     onSubmit(formData);
+    setFormErrors({});
   };
 
   const inputStyle = "input input-md w-full bg-white";
@@ -53,6 +91,21 @@ export default function AddScheduleForm({ setIsOpen, onSubmit, nameError }) {
           <label htmlFor="scheduleImage">Image</label>
           <input id="scheduleImage" name="scheduleImage" type="file" className={fileStyle} onChange={handleFileChange} />
         </div>
+        {Object.keys(formErrors).length > 0 && (
+          <div className="error-messages text-rose-500 text-sm italic flex flex-col items-center justify-end">
+            {Object.values(formErrors).map((error, index) => (
+              <p key={index}>{error}</p>
+            ))}
+          </div>
+        )}
+        <h1 className="flex justify-center text-sm text-primary font-bold tracking-wider">Preview</h1>
+        {formData.scheduleImage ? (
+          <img src={formData.scheduleImage} alt="shipping-schedule-img" className="aspect-video object-cover rounded-lg shadow" />
+        ) : (
+          <div className="aspect-video flex justify-center  items-center border border-gray-300">
+            <LucideImage className="" size={100} />
+          </div>
+        )}
         <div className="error-messages text-rose-500 text-sm italic flex flex-col items-end justify-end">
           <p> {nameError}</p>
         </div>
