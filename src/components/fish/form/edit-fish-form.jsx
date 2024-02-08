@@ -66,12 +66,12 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    const maxFileSize = 1024 * 1024;
+    const maxFileSize = 1024 * 1024 * 2;
 
     if (!file || file.size > maxFileSize) {
       setFormErrors((prevErrors) => ({
         ...prevErrors,
-        [e.target.name]: "The image size should not exceed 1MB",
+        [e.target.name]: "The image size should not exceed 2MB",
       }));
       return;
     }
