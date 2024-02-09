@@ -7,7 +7,19 @@ import classes from "./scss/coupon.module.scss";
 import EditCouponForm from "./forms/edit-coupon-form";
 import { X } from "lucide-react";
 
-export default function EditCoupon({ isOpen, setIsOpen, onEdit, couponName, discountPercentage, discountMaxPriceIdr, discountMaxPriceUsd, expirationDate }) {
+export default function EditCoupon({
+  isOpen,
+  setIsOpen,
+  onEdit,
+  couponName,
+  discountMinTransactionFish,
+  discountMinTransactionIdr,
+  discountMinTransactionUsd,
+  discountPercentage,
+  discountMaxPriceIdr,
+  discountMaxPriceUsd,
+  expirationDate,
+}) {
   const { userToken } = useAuth();
 
   const handleEditCoupon = async (formData) => {
@@ -40,8 +52,20 @@ export default function EditCoupon({ isOpen, setIsOpen, onEdit, couponName, disc
         <X />
       </button>
       <div onClick={(e) => e.stopPropagation()} className={classes.modalCard}>
-        <h1 className="text-xl flex justify-center text-rose-500 font-bold my-3">Edit Coupon: {couponName}</h1>
-        <EditCouponForm setIsOpen={setIsOpen} onSubmit={handleEditCoupon} discountPercentage={discountPercentage} discountMaxPriceIdr={discountMaxPriceIdr} discountMaxPriceUsd={discountMaxPriceUsd} expirationDate={expirationDate} />
+        <h1 className="text-xl flex justify-center text-rose-500 font-bold my-3">
+          Edit Coupon: {couponName}
+        </h1>
+        <EditCouponForm
+          setIsOpen={setIsOpen}
+          onSubmit={handleEditCoupon}
+          discountMinTransactionFish={discountMinTransactionFish}
+          discountMinTransactionIdr={discountMinTransactionIdr}
+          discountMinTransactionUsd={discountMinTransactionUsd}
+          discountPercentage={discountPercentage}
+          discountMaxPriceIdr={discountMaxPriceIdr}
+          discountMaxPriceUsd={discountMaxPriceUsd}
+          expirationDate={expirationDate}
+        />
       </div>
     </div>
   );

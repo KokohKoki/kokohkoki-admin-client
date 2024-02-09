@@ -5,6 +5,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "../../../utils/firebase";
 
 export default function EditScheduleForm({ setIsOpen, onSubmit, scheduleName, scheduleImage }) {
+  const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     scheduleName: scheduleName,
     scheduleImage: scheduleImage,
@@ -20,21 +21,57 @@ export default function EditScheduleForm({ setIsOpen, onSubmit, scheduleName, sc
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    const storage = getStorage(app);
-    const storageRef = ref(storage, "schedule_images/" + file.name);
+    const maxFileSize = 1024 * 1024 * 2;
 
-    try {
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      setFormData({ ...formData, [e.target.name]: downloadURL });
-    } catch (error) {
-      console.error("Error uploading file:", error);
+    if (!file || file.size > maxFileSize) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [e.target.name]: "The image size should not exceed 2MB",
+      }));
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob(async (blob) => {
+          const storage = getStorage(app);
+          const storageRef = ref(storage, `schedule_images/${Date.now()}.webp`);
+
+          try {
+            const snapshot = await uploadBytes(storageRef, blob);
+            const downloadURL = await getDownloadURL(snapshot.ref);
+            setFormData({ ...formData, [e.target.name]: downloadURL });
+            setFormErrors((prevErrors) => ({
+              ...prevErrors,
+              [e.target.name]: undefined,
+            }));
+          } catch (error) {
+            console.error("Error uploading file:", error);
+          }
+        }, "image/webp");
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const hasErrors = Object.values(formErrors).some((error) => error !== undefined);
+
+    if (hasErrors) {
+      return;
+    }
+
     onSubmit(formData);
+    setFormErrors({});
   };
 
   const inputStyle = "input input-md w-full bg-white";
@@ -53,6 +90,13 @@ export default function EditScheduleForm({ setIsOpen, onSubmit, scheduleName, sc
         <label htmlFor="scheduleImage">Change Image</label>
         <input id="scheduleImage" name="scheduleImage" type="file" className={fileStyle} onChange={handleFileChange} />
       </div>
+      {Object.keys(formErrors).length > 0 && (
+          <div className="error-messages text-rose-500 text-sm italic flex flex-col items-end justify-end">
+            {Object.values(formErrors).map((error, index) => (
+              <p key={index}>{error}</p>
+            ))}
+          </div>
+        )}
       <div className="flex gap-2 justify-end">
         <button type="reset" onClick={() => setIsOpen(false)} className="px-4 py-1.5 rounded-lg mt-4 text-white bg-rose-500 border-none transition duration-150 ease-in-out hover:opacity-75">
           Close

@@ -7,13 +7,18 @@ export default function DeleteSchedule({ scheduleId, onDelete }) {
   const { userToken } = useAuth();
 
   const handleDeleteSchedule = async () => {
-    try {
-      await deleteSchedule(scheduleId, userToken);
-      if (onDelete) {
-        onDelete();
+    const isConfirmed = window.confirm("Are you sure you want to delete this schedule?");
+    if (isConfirmed) {
+      try {
+        await deleteSchedule(scheduleId, userToken);
+        if (onDelete) {
+          onDelete();
+        }
+      } catch (error) {
+        console.error("Failed to delete fish:", error);
       }
-    } catch (error) {
-      console.error("Failed to delete fish:", error);
+    } else {
+      return;
     }
   };
 

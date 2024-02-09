@@ -7,14 +7,19 @@ export default function DeleteFish({ fishId, onDelete }) {
   const { userToken } = useAuth();
 
   const handleDeleteFish = async () => {
-    try {
-      await deleteFish(userToken, fishId);
+    const isConfirmed = window.confirm("Are you sure you want to delete this fish?");
 
-      if (onDelete) {
-        onDelete();
+    if (isConfirmed) {
+      try {
+        await deleteFish(userToken, fishId);
+        if (onDelete) {
+          onDelete();
+        }
+      } catch (error) {
+        console.error("Failed to delete fish:", error);
       }
-    } catch (error) {
-      console.error("Failed to delete fish:", error);
+    } else {
+      return;
     }
   };
 

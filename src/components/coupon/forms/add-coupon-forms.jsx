@@ -9,6 +9,9 @@ export default function AddCouponForm({ setIsOpen, onSubmit }) {
   const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     discountCode: "",
+    discountMinTransactionFish: 0,
+    discountMinTransactionIdr: 0,
+    discountMinTransactionUsd: 0,
     discountPercentage: 0,
     discountMaxPriceUsd: 0,
     discountMaxPriceIdr: 0,
@@ -19,7 +22,14 @@ export default function AddCouponForm({ setIsOpen, onSubmit }) {
     const { name, value } = e.target;
     let finalValue;
 
-    if (name === "discountPercentage" || name === "discountMaxPriceUsd" || name === "discountMaxPriceIdr") {
+    if (
+      name === "discountMinTransactionFish" ||
+      name === "discountMinTransactionIdr" ||
+      name === "discountMinTransactionUsd" ||
+      name === "discountPercentage" ||
+      name === "discountMaxPriceUsd" ||
+      name === "discountMaxPriceIdr"
+    ) {
       finalValue = parseFloat(value) || 0;
     } else {
       finalValue = value;
@@ -54,27 +64,119 @@ export default function AddCouponForm({ setIsOpen, onSubmit }) {
   const inputStyle = "input input-md w-full bg-white";
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 my-4 justify-start text-gray-700 mx-2 font-medium">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-2 my-4 justify-start text-gray-700 mx-2 font-medium"
+    >
       <div className={classes.modalGridForm}>
         <label htmlFor="discountCode">Coupon Code</label>
-        <input id="discountCode" name="discountCode" type="text" placeholder="contoh: KOKI123" className={inputStyle} autoComplete="off" onChange={handleChange} required />
+        <input
+          id="discountCode"
+          name="discountCode"
+          type="text"
+          placeholder="contoh: KOKI123"
+          className={inputStyle}
+          autoComplete="off"
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className={classes.modalGridForm}>
+        <label htmlFor="discountMinTransactionFish">
+          Minimum Transaction Fish
+        </label>
+        <input
+          id="discountMinTransactionFish"
+          name="discountMinTransactionFish"
+          type="text"
+          placeholder="contoh: 2"
+          className={inputStyle}
+          autoComplete="off"
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className={classes.modalGridForm}>
+        <label htmlFor="discountMinTransactionIdr">
+          Minimum Transaction IDR
+        </label>
+        <input
+          id="discountMinTransactionIdr"
+          name="discountMinTransactionIdr"
+          type="text"
+          placeholder="contoh: 50000"
+          className={inputStyle}
+          autoComplete="off"
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className={classes.modalGridForm}>
+        <label htmlFor="discountMinTransactionUsd">
+          Minimum Transaction USD
+        </label>
+        <input
+          id="discountMinTransactionUsd"
+          name="discountMinTransactionUsd"
+          type="text"
+          placeholder="contoh: 50000"
+          className={inputStyle}
+          autoComplete="off"
+          onChange={handleChange}
+          required
+        />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountPercentage">Discount Percentage</label>
-        <input id="discountPercentage" name="discountPercentage" type="text" placeholder="contoh: 50" className={inputStyle} autoComplete="off" onChange={handleChange} required />
+        <input
+          id="discountPercentage"
+          name="discountPercentage"
+          type="text"
+          placeholder="contoh: 50"
+          className={inputStyle}
+          autoComplete="off"
+          onChange={handleChange}
+          required
+        />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountMaxPriceIdr">Set Max Price IDR</label>
-        <input id="discountMaxPriceIdr" name="discountMaxPriceIdr" type="text" placeholder="contoh: 100000" className={inputStyle} autoComplete="off" onChange={handleChange} required />
+        <input
+          id="discountMaxPriceIdr"
+          name="discountMaxPriceIdr"
+          type="text"
+          placeholder="contoh: 100000"
+          className={inputStyle}
+          autoComplete="off"
+          onChange={handleChange}
+          required
+        />
       </div>
       <div className={classes.modalGridForm}>
         <label htmlFor="discountMaxPriceUsd">Set Max Price USD</label>
-        <input id="discountMaxPriceUsd" name="discountMaxPriceUsd" type="text" placeholder="contoh: 100" className={inputStyle} autoComplete="off" onChange={handleChange} required />
+        <input
+          id="discountMaxPriceUsd"
+          name="discountMaxPriceUsd"
+          type="text"
+          placeholder="contoh: 100"
+          className={inputStyle}
+          autoComplete="off"
+          onChange={handleChange}
+          required
+        />
       </div>
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
       <div className={classes.modalGridForm}>
         <label htmlFor="expirationDate">Set Expiration Date</label>
-        <input id="expirationDate" name="expirationDate" type="date" className="input input-md w-full bg-slate-400" autoComplete="off" onChange={handleChange} required />
+        <input
+          id="expirationDate"
+          name="expirationDate"
+          type="date"
+          className="input input-md w-full bg-slate-400"
+          autoComplete="off"
+          onChange={handleChange}
+          required
+        />
       </div>
       {Object.keys(formErrors).length > 0 && (
         <div className="error-messages text-rose-500 text-sm italic flex flex-col items-end justify-end">
@@ -84,10 +186,17 @@ export default function AddCouponForm({ setIsOpen, onSubmit }) {
         </div>
       )}
       <div className="flex gap-2 justify-end">
-        <button type="reset" onClick={() => setIsOpen(false)} className="px-4 py-1.5 rounded-lg mt-4 text-white bg-rose-500 border-none transition duration-150 ease-in-out hover:opacity-75">
+        <button
+          type="reset"
+          onClick={() => setIsOpen(false)}
+          className="px-4 py-1.5 rounded-lg mt-4 text-white bg-rose-500 border-none transition duration-150 ease-in-out hover:opacity-75"
+        >
           Close
         </button>
-        <button type="submit" className="px-4 py-1.5 rounded-lg mt-4 text-white bg-green-500 border-none transition duration-150 ease-in-out hover:opacity-75">
+        <button
+          type="submit"
+          className="px-4 py-1.5 rounded-lg mt-4 text-white bg-green-500 border-none transition duration-150 ease-in-out hover:opacity-75"
+        >
           Create Coupon
         </button>
       </div>
