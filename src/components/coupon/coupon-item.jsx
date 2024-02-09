@@ -6,7 +6,17 @@ import { Pen } from "lucide-react";
 import EditCoupon from "./edit-coupon-modal";
 import { useState } from "react";
 
-export default function CouponItem({ reFetchCoupon, discountCode, discountPercentage, discountMaxPriceIdr, discountMaxPriceUsd, expirationDate }) {
+export default function CouponItem({
+  reFetchCoupon,
+  discountCode,
+  discountMinTransactionFish,
+  discountMinTransactionIdr,
+  discountMinTransactionUsd,
+  discountPercentage,
+  discountMaxPriceIdr,
+  discountMaxPriceUsd,
+  expirationDate,
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -17,13 +27,31 @@ export default function CouponItem({ reFetchCoupon, discountCode, discountPercen
             Coupon Name: <span className="font-normal">{discountCode}</span>
           </p>
           <p>
+            Minimum Transaction Fish:{" "}
+            <span className="font-normal">{discountMinTransactionFish}</span>
+          </p>
+          <p>
+            Minimum Transaction IDR:{" "}
+            <span className="font-normal">
+              {idrFormatter(discountMinTransactionIdr)}
+            </span>
+          </p>
+          <p>
+            Minimum Transaction USD:{" "}
+            <span className="font-normal">
+              {usdFormatter(discountMinTransactionUsd)}
+            </span>
+          </p>
+          <p>
             Discount Percentage: <span>{discountPercentage}%</span>
           </p>
           <p>
-            Max Discount Price IDR: <span className="italic">{idrFormatter(discountMaxPriceIdr)}</span>
+            Max Discount Price IDR:{" "}
+            <span className="italic">{idrFormatter(discountMaxPriceIdr)}</span>
           </p>
           <p>
-            Max Discount Price USD: <span className="italic">{usdFormatter(discountMaxPriceUsd)}</span>
+            Max Discount Price USD:{" "}
+            <span className="italic">{usdFormatter(discountMaxPriceUsd)}</span>
           </p>
           <p>
             Expired Date: <span>{expirationDate}</span>
@@ -32,7 +60,10 @@ export default function CouponItem({ reFetchCoupon, discountCode, discountPercen
 
         <div className="flex flex-col gap-3">
           <div onClick={() => setIsOpen(true)}>
-            <Pen size={20} className="text-rose-500 transition duration-150 hover:text-green-500" />
+            <Pen
+              size={20}
+              className="text-rose-500 transition duration-150 hover:text-green-500"
+            />
           </div>
           <div>
             <DeleteCoupon couponName={discountCode} onDelete={reFetchCoupon} />
@@ -45,6 +76,9 @@ export default function CouponItem({ reFetchCoupon, discountCode, discountPercen
         setIsOpen={setIsOpen}
         onEdit={reFetchCoupon}
         couponName={discountCode}
+        discountMinTransactionFish={discountMinTransactionFish}
+        discountMinTransactionIdr={discountMinTransactionIdr}
+        discountMinTransactionUsd={discountMinTransactionUsd}
         discountMaxPriceIdr={discountMaxPriceIdr}
         discountMaxPriceUsd={discountMaxPriceUsd}
         discountPercentage={discountPercentage}
