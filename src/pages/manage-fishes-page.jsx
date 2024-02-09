@@ -7,6 +7,7 @@ import AddFish from "../components/fish/add-fish-modal";
 import { getAllTypes } from "../api/type-api";
 import FishPagination from "../components/fish/fish-pagination";
 import { getAllEvents } from "../api/event-api";
+import SortFishes from "../components/fish/sorting-fishes";
 
 export default function ManageFishPage() {
   const [fishes, setFishes] = useState([]);
@@ -14,14 +15,19 @@ export default function ManageFishPage() {
   const [eventList, setEventList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const ITEMS_PER_PAGE = 5;
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
-  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const [searchQuery, setSearchQuery] = useState("");
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1);
   };
 
   const handleSearch = (query) => {
@@ -30,7 +36,7 @@ export default function ManageFishPage() {
   };
 
   const filteredFishes = fishes.filter((fish) => fish.name.toLowerCase().includes(searchQuery) || fish.type.toLowerCase().includes(searchQuery));
-  const totalPages = Math.ceil(filteredFishes.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredFishes.length / itemsPerPage);
   const currentFishes = filteredFishes.slice(indexOfFirstItem, indexOfLastItem);
 
   const fetchFishes = useCallback(async () => {
@@ -67,7 +73,10 @@ export default function ManageFishPage() {
           </button>
           <SearchFish onSearch={handleSearch} />
         </div>
-        <FishPagination totalPages={totalPages} paginate={paginate} currentPage={currentPage} />
+        <div className="flex flex-wrap justify-between items-center">
+          <FishPagination totalPages={totalPages} paginate={paginate} currentPage={currentPage} />
+          <SortFishes value={itemsPerPage} onChange={handleItemsPerPageChange} />
+        </div>
         <ContentWrapper loading={loading}>
           {currentFishes.map((fish) => (
             <FishItem key={fish._id} {...fish} reFetchFishes={reFetchFishes} typesData={types} eventList={eventList} />
