@@ -7,13 +7,18 @@ export default function DeleteCoupon({ onDelete, couponName }) {
   const { userToken } = useAuth();
 
   const handleDeleteCoupon = async () => {
-    try {
-      await deleteCoupon(userToken, couponName);
-      if (onDelete) {
-        onDelete();
+    const isConfirmed = window.confirm("Are you sure you want to delete this coupon?");
+    if (isConfirmed) {
+      try {
+        await deleteCoupon(userToken, couponName);
+        if (onDelete) {
+          onDelete();
+        }
+      } catch (error) {
+        console.error("Failed to delete coupon:", error);
       }
-    } catch (error) {
-      console.error("Failed to delete coupon:", error);
+    } else {
+      return;
     }
   };
 
