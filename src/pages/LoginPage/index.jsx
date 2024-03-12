@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useState, useEffect } from "react";
 
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -38,6 +39,19 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    const storedPassword = localStorage.getItem("password");
+    if (storedUsername && storedPassword && rememberMe) {
+      setUsername(storedUsername);
+      setPassword(storedPassword);
+    }
+  }, [rememberMe]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const loadingAlert = Swal.fire({
@@ -49,10 +63,9 @@ export default function SignInSide() {
       allowOutsideClick: false,
     });
     try {
-      const data = new FormData(event.currentTarget);
       const response = await axios.post(`${API_URL}/auth/login`, {
-        username: data.get("username"),
-        password: data.get("password"),
+        username: username,
+        password: password,
       });
       sessionStorage.setItem("userToken", response.data.data.token);
       loadingAlert.close();
@@ -62,6 +75,14 @@ export default function SignInSide() {
         title: "Login Successful",
         text: "You have successfully logged in. You will be redirected to the dashboard soon...",
       });
+
+      if (rememberMe) {
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
+      } else {
+        localStorage.removeItem("username");
+        localStorage.removeItem("password");
+      }
 
       setTimeout(() => {
         window.location.href = "/dashboard";
@@ -146,7 +167,8 @@ export default function SignInSide() {
                   id="username"
                   label="Usename"
                   name="username"
-                  autoFocus
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
                 <TextField
                   margin="normal"
@@ -156,9 +178,18 @@ export default function SignInSide() {
                   label="Password"
                   type="password"
                   id="password"
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
                 />
                 <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
+                  control={
+                    <Checkbox
+                      value="remember"
+                      color="primary"
+                      checked={rememberMe}
+                      onChange={() => setRememberMe(!rememberMe)}
+                    />
+                  }
                   label="Remember me"
                 />
                 <Button
