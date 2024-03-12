@@ -205,7 +205,7 @@ export default function EditFishForm({ isAvailable, name, gender, type, price, p
         <input id="discountPriceIdr" name="discountPriceIdr" type="number" className={inputStyle} autoComplete="off" value={formData.discountPriceIdr} onChange={handleChange} />
       </div>
       <div className={classes.modalGridForm}>
-        <label htmlFor="discountPriceUsd">Discount IDR</label>
+        <label htmlFor="discountPriceUsd">Discount USD</label>
         <input id="discountPriceUsd" name="discountPriceUsd" type="number" className={inputStyle} autoComplete="off" value={formData.discountPriceUsd} onChange={handleChange} />
       </div>
       <div className="w-full h-[2px] bg-gray-300 opacity-75 my-2" />
