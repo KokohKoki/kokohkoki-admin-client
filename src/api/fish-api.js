@@ -1,8 +1,8 @@
 import { api } from "./api-config";
 
-export const getAllFishes = async () => {
+export const getAllFishes = async (page, limit) => {
   try {
-    const response = await api.get("/fish");
+    const response = await api.get(`/fish/pagination?page=${page}&limit=${limit}&sort=desc`);
     return response.data;
   } catch (error) {
     console.error(error);
