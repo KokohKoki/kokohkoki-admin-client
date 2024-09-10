@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from "react";
 import { getAllFishes } from "../api/fish-api";
 import ContentWrapper from "../components/UI/content-wrapper";
@@ -24,11 +25,8 @@ export default function ManageFishPage() {
     setLoading(true);
     try {
       const data = await getAllFishes(currentPage, itemsPerPage);
-      const types = await getAllTypes();
-      const eventList = await getAllEvents();
       setFishes(data.data.fish);
       setTypes(types.data);
-      setEventList(eventList.data);
       setTotalPages(data.data.pagination.totalPages);
     } catch (error) {
       console.error("Failed to fetch fishes or types:", error);
@@ -37,9 +35,29 @@ export default function ManageFishPage() {
     }
   }, [currentPage, itemsPerPage]);
 
+  const fetchTypes = useCallback(async () => {
+    try {
+      const types = await getAllTypes();
+      setTypes(types.data);
+    } catch (error) {
+      console.error("Failed to fetch types:", error);
+    }
+  }, []);
+
+  const fetchEvents = useCallback(async () => {
+    try {
+      const eventList = await getAllEvents();
+      setEventList(eventList.data);
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    }
+  }, []);
+
   useEffect(() => {
     fetchFishes();
-  }, [fetchFishes]);
+    fetchTypes();
+    fetchEvents();
+  }, [fetchFishes, fetchTypes, fetchEvents]);
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
