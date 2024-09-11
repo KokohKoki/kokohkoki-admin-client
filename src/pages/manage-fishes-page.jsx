@@ -26,7 +26,6 @@ export default function ManageFishPage() {
     try {
       const data = await getAllFishes(currentPage, itemsPerPage);
       setFishes(data.data.fish);
-      setTypes(types.data);
       setTotalPages(data.data.pagination.totalPages);
     } catch (error) {
       console.error("Failed to fetch fishes or types:", error);
@@ -36,28 +35,40 @@ export default function ManageFishPage() {
   }, [currentPage, itemsPerPage]);
 
   const fetchTypes = useCallback(async () => {
+    setLoading(true);
     try {
-      const types = await getAllTypes();
-      setTypes(types.data);
+      const data = await getAllTypes();
+      setTypes(data.data.reverse());
     } catch (error) {
       console.error("Failed to fetch types:", error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
   const fetchEvents = useCallback(async () => {
+    setLoading(true);
     try {
-      const eventList = await getAllEvents();
-      setEventList(eventList.data);
+      const data = await getAllEvents();
+      setEventList(data.data.reverse());
     } catch (error) {
-      console.error("Failed to fetch events:", error);
+      console.error("Failed to fetch types:", error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchFishes();
-    fetchTypes();
     fetchEvents();
-  }, [fetchFishes, fetchTypes, fetchEvents]);
+  }, [fetchEvents]);
+
+  useEffect(() => {
+    fetchFishes();
+  }, [fetchFishes]);
+
+  useEffect(() => {
+    fetchTypes();
+  }, [fetchTypes]);
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
@@ -83,6 +94,8 @@ export default function ManageFishPage() {
 
   const reFetchFishes = () => {
     fetchFishes();
+    fetchTypes();
+    fetchEvents();
   };
 
   return (
